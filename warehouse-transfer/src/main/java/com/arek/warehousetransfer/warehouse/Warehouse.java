@@ -1,5 +1,6 @@
 package com.arek.warehousetransfer.warehouse;
 
+import com.arek.warehousetransfer.stock.ReservedStock;
 import com.arek.warehousetransfer.stock.Stock;
 import com.arek.warehousetransfer.user.User;
 import lombok.Data;
@@ -30,6 +31,9 @@ public class Warehouse {
 	private User manager;
 
 	@NotNull
-	@OneToMany(mappedBy = "currentWarehouse")
+	@OneToMany(mappedBy = "warehouse")
 	private List<Stock> stocks;
+
+	@OneToMany(mappedBy = "warehouse")
+	private List<ReservedStock> reservedStocks;
 }

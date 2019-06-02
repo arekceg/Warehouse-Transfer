@@ -29,8 +29,12 @@ public class StockService {
 		return stockRepository.sumItemStockByItemIdAndWarehouseId(itemId, warehouseId);
 	}
 
+	public Stock findStockByItemIdAndWarehouseId(Long itemId, Long warehouseId) {
+		return stockRepository.findStockByItemIdAndWarehouseId(itemId, warehouseId);
+	}
+
 	public List<Stock> findStockByWarehouseId(Long id) {
-		return stockRepository.findByCurrentWarehouseId(id);
+		return stockRepository.findByWarehouseId(id);
 	}
 
 	public Map<Item, Integer> getStockMapFromWarehouse(Long id) {
@@ -40,7 +44,7 @@ public class StockService {
 
 	public Map<Warehouse, Integer> getItemStockMapByItemId(Long id) {
 		return stockRepository.findByItemId(id).stream()
-				.collect(Collectors.toMap(Stock::getCurrentWarehouse, Stock::getItemStock));
+				.collect(Collectors.toMap(Stock::getWarehouse, Stock::getItemStock));
 	}
 
 	public Map<Item, Map<Warehouse, Integer>> getFullStockListByItem() {
@@ -52,7 +56,6 @@ public class StockService {
 //				.collect(Collectors.toMap(s->s.pu);
 
 	}
-
 
 
 }

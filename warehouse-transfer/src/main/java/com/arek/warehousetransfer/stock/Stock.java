@@ -35,7 +35,7 @@ public class Stock {
 
 	//	@NotNull
 	@ManyToOne
-	private Warehouse currentWarehouse;
+	private Warehouse warehouse;
 
 	// == constructor ==
 
@@ -43,7 +43,7 @@ public class Stock {
 	              @NotNull Warehouse warehouse) {
 		this.item = item;
 		this.itemStock = itemStock;
-		this.currentWarehouse = warehouse;
+		this.warehouse = warehouse;
 	}
 
 	// == static methods ==
@@ -52,8 +52,8 @@ public class Stock {
 		return new Stock();
 	}
 
-	public static Stock of(Item item, int stock, Warehouse warehouse) {
-		return new Stock(item, stock, warehouse);
+	public static Stock of(Item stockItem, int itemAmount, Warehouse currentWarehouse) {
+		return new Stock(stockItem, itemAmount, currentWarehouse);
 	}
 
 

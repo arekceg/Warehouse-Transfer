@@ -29,7 +29,12 @@ public class TransferContent {
 	@NotNull
 	private int amount;
 
-//	public TransferContent(@NotNull Item item, @PositiveOrZero @NotNull int amount) {
+	public TransferContent(@NotNull Item item, @PositiveOrZero @NotNull int amount) {
+		this.item = item;
+		this.amount = amount;
+	}
+
+	//	public TransferContent(@NotNull Item item, @PositiveOrZero @NotNull int amount) {
 //		this.item = item;
 //		this.amount = amount;
 //	}
@@ -40,6 +45,10 @@ public class TransferContent {
 
 	public static TransferContent empty(){
 		return new TransferContent();
+	}
+
+	public static TransferContent of(Item itemToTransfer, int itemAmount){
+		return new TransferContent(itemToTransfer,itemAmount);
 	}
 }
 

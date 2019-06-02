@@ -8,10 +8,11 @@ import java.util.List;
 
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
-	@Query("SELECT SUM(s.itemStock) FROM Stock s WHERE s.id=?1 AND s.currentWarehouse.id =?2")
+	@Query("SELECT SUM(s.itemStock) FROM Stock s WHERE s.id=?1 AND s.warehouse.id =?2")
 	int sumItemStockByItemIdAndWarehouseId(Long itemId, Long warehouseId);
 
-	List<Stock> findByCurrentWarehouseId(Long id);
+	Stock findStockByItemIdAndWarehouseId(Long itemId, Long warehouseId);
+	List<Stock> findByWarehouseId(Long id);
 	List<Stock> findByItemId(Long id);
 //	Stock findStockByItemIdAndCurrentWarehouseId(Long itemId, Long warehouseId);
 }

@@ -1,0 +1,58 @@
+Aplikacja do zarządzania przewozem przedmiotów między magazynami
+
+Na pomysł wpadłem wracając myślami do prowadzania budów
+gdzie za każdym razem kiedy trzeba było przewieźć rusztowania
+z jednej budowy na drugą trzeba było ręcznie pisać protokoły
+które potem ziomek w biurze miał wprowadzać do excela,
+ale często zapominał i i tak co budowę trzba było zliczać
+wszystkie stany ze wszystkich budów i szukać szufladach
+gdzie kto jaki protokół zapodział. Aplikacja pomogła by
+w takich sytuacjach.
+
+Główne założenia:
+  - Różne magazyny z różnymi stanami, każdy z własnym menadżerem
+  - Każdy menadżer może wprowadzić do systemu nowy Transfer przedmiotów
+    określając co, ile i dokąd.
+  - Informacja ta trafia do menadżera magazynu docelowego i dopiero gdy
+    przeliczy, że ilość towaru, którą dostał zgadza się z zadeklarowaną
+    przez menadżera pierwszego magazynu - zmiany zostają wprowadzone.
+  - Jeżeli uzna, że ilości się nie zgadzają może odrzucić raport i wtedy
+    sprawa wraca do poprzedniego magazynu jak i do admina systemu
+  - Admin ma wgląd we wszystkie transakcje, może też ręcznie zmieniać
+    stan każdego magazynu w celu dokonania odpowiednich korekt.
+  - Admin jako jedny może dodawać przedmioty do ogólnej listy dostępnych
+  - Admin jako jedyny może dodawać użytkowników przypisując ich
+    do odpowiednich magazynów.
+
+Podstawowa funkcjonalność:
+  - Logowanie: user lub admin
+  - USER:
+    - Wgląd w inwentarz swojego magazynu
+    - Wprowadzanie i rejestracja nowego transferu
+    - Akceptacja transferu i wproawdzenie zmian w stany magazynów
+    - Odrzucenie transferu
+  - ADMIN:
+    - Wgląd we wszystkie transfery
+    - Wgląd w konfliktowe transfery
+    - Możliwość dodawania przedmiotów i poprawiania stanów magazynowych
+
+  Dodatkowe funkcjonalności:
+  - USER:
+    - Możliwość przeprowadzenia inwentaryzacji towaru, do akceptacji przez admina
+    - Możliwość poprawy zakwestionowanego transportu
+
+  ** Kruczek ** :
+   Aplikację starałem się zaprojektować nie bardzo skomplikowaną,
+   więc po wprowadzeniu szkieletu podstawowych funkconalności chciałbym,
+   zamiast na formularzach i tabelach,skupić się na zrobieniu czegoś fajnego
+   w backendzie tej aplikacji, a mianowicie rozbicia jej na dwa kontenery Dockerowe.
+   Wydaje mi się, że praktycznie doświadczenie z Dockerem bardzo mi ułatwi później
+   szukanie pracy (a poza tym strasznie się chcę nauczyć dockerowania).
+   = KONTENERY:
+    - Admin:
+      - tylko ten kontener ma możliwość bezpośredniej komunikacji z bazą
+      - klienci wysyłają do niego zapytania RESTowe
+      - na ten kontener loguje się admin
+    - Client:
+      - na ten kontener logują się użytkownicy
+      - nie ma bezpośredniej łączności z bazą danych
