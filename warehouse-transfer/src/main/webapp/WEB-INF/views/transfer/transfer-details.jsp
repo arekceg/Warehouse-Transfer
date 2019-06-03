@@ -59,7 +59,7 @@ Item List:
     </tr>
     <c:forEach items="${transfer.transferContents}" var="transfeContent">
         <tr>
-            <td>${transfeContent.id}</td>
+            <td>${transfeContent.item.id}</td>
             <td>${transfeContent.item.name}</td>
             <td>${transfeContent.amount}</td>
         </tr>

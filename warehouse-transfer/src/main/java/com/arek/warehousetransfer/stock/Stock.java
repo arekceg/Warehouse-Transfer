@@ -33,17 +33,23 @@ public class Stock {
 	@Column(nullable = false)
 	private int itemStock;
 
-	//	@NotNull
+	@NotNull
 	@ManyToOne
 	private Warehouse warehouse;
+
+	@NotNull
+	private StockType stockType;
+
+
 
 	// == constructor ==
 
 	private Stock(@NotNull Item item, @NotBlank @PositiveOrZero int itemStock,
-	              @NotNull Warehouse warehouse) {
+	              @NotNull Warehouse warehouse, @NotNull StockType stockType) {
 		this.item = item;
 		this.itemStock = itemStock;
 		this.warehouse = warehouse;
+		this.stockType = stockType;
 	}
 
 	// == static methods ==
@@ -52,12 +58,17 @@ public class Stock {
 		return new Stock();
 	}
 
-	public static Stock of(Item stockItem, int itemAmount, Warehouse currentWarehouse) {
-		return new Stock(stockItem, itemAmount, currentWarehouse);
+	public static Stock of(Item stockItem, int itemAmount, Warehouse currentWarehouse, StockType stockType) {
+		return new Stock(stockItem, itemAmount, currentWarehouse, stockType);
 	}
 
-
+	// == public methods ==
 	public String toString() {
-		return "Stock(item=" + this.getItem() + ", itemStock=" + this.getItemStock()+"\n";
+		return "Stock(item=" + this.getItem() + ", itemStock=" + this.getItemStock() + "\n";
+	}
+
+	@Enumerated(EnumType.ORDINAL)
+	public StockType getStockType(){
+		return stockType;
 	}
 }

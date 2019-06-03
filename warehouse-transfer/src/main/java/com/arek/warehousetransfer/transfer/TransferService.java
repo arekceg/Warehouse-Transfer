@@ -1,7 +1,7 @@
 package com.arek.warehousetransfer.transfer;
 
 import com.arek.warehousetransfer.item.Item;
-import com.arek.warehousetransfer.item.ItemRepository;
+import com.arek.warehousetransfer.item.ItemService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -20,7 +19,7 @@ public class TransferService {
 
 	// == fields ==
 	private TransferRepository transferRepository;
-	private ItemRepository itemRepository;
+	private ItemService itemService;
 
 	// == public methods ==
 	public List<Transfer> findAllTransfers() {
@@ -31,28 +30,24 @@ public class TransferService {
 		transferRepository.save(transfer);
 	}
 
-	public Transfer populateTransferDataFromRequestMap(Map<String,String> requestMap, Transfer transfer) {
+	public Transfer populateTransferDataFromRequestBody(HttpServletRequest req, Transfer transfer) {
 		List<TransferContent> transferContents = new ArrayList<>();
-		requestMap.forEach((k,v)->{
-			if(NumberUtils.isParsable(k)){
-				Item itemToAdd = itemRepository.findById(NumberUtils.toLong(k)).orElse(null);
-				int itemAmount = NumberUtils.toInt(v);
-				TransferContent transferContent = TransferContent.of(itemToAdd, itemAmount);
-				transferContents.add(transferContent);
+		Enumeration<String> paramNames = req.getParameterNames();
+
+		while (paramNames.hasMoreElements()) {
+			String paramName = paramNames.nextElement();
+			if (NumberUtils.isParsable(paramName)) {
+				Item itemToAdd = itemService.findItemById(NumberUtils.toLong(paramName));
+				int itemAmount = NumberUtils.toInt(req.getParameter(paramName));
+				if (itemAmount > 0) {
+					TransferContent transferContent = TransferContent.of(itemToAdd, itemAmount, transfer);
+					transferContents.add(transferContent);
+				}
 			}
-		});
+		}
+
 		transfer.setTransferContents(transferContents);
 		return transfer;
-//		Enumeration<String> paramNames = req.getParameterNames();
-//		while (paramNames.hasMoreElements()) {
-//			String paramName = paramNames.nextElement();
-//			if (NumberUtils.isParsable(paramName)) {
-//				Item itemToAdd = itemRepository.findById(NumberUtils.toLong(paramName)).orElse(null);
-//				int itemAmount = NumberUtils.toInt(req.getParameter(paramName));
-//				TransferContent transferContent = TransferContent.of(itemToAdd, itemAmount);
-//				transferContents.add(transferContent);
-//			}
-//		}
 	}
 
 

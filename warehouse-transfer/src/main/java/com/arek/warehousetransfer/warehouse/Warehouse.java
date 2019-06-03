@@ -1,12 +1,8 @@
 package com.arek.warehousetransfer.warehouse;
 
-import com.arek.warehousetransfer.stock.ReservedStock;
 import com.arek.warehousetransfer.stock.Stock;
 import com.arek.warehousetransfer.user.User;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -31,9 +27,22 @@ public class Warehouse {
 	private User manager;
 
 	@NotNull
-	@OneToMany(mappedBy = "warehouse")
+	@OneToMany
+			(mappedBy = "warehouse")
 	private List<Stock> stocks;
 
-	@OneToMany(mappedBy = "warehouse")
-	private List<ReservedStock> reservedStocks;
+//	@NotNull
+//	@OneToMany
+//	private List<Stock> availableStock;
+//
+//	@NotNull
+//	@OneToMany
+//	private List<Stock> reservedStock;
+//
+//	@NotNull
+//	@OneToMany
+//	private List<Stock> totalStock;
+
+//	@Transient
+//	private Map<Item,Integer> availableStockByItemMap
 }

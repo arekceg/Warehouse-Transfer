@@ -29,14 +29,15 @@ public class TransferContent {
 	@NotNull
 	private int amount;
 
-	public TransferContent(@NotNull Item item, @PositiveOrZero @NotNull int amount) {
+	public TransferContent(@NotNull Item item, @PositiveOrZero @NotNull int amount, Transfer transfer  ) {
 		this.item = item;
 		this.amount = amount;
+		this.transfer = transfer;
 	}
 
-	//	public TransferContent(@NotNull Item item, @PositiveOrZero @NotNull int amount) {
+	//	public TransferContent(@NotNull Item item, @PositiveOrZero @NotNull int itemStock) {
 //		this.item = item;
-//		this.amount = amount;
+//		this.itemStock = itemStock;
 //	}
 
 //	public static TransferContent of(Item transferItem, int itemAmount){
@@ -47,8 +48,8 @@ public class TransferContent {
 		return new TransferContent();
 	}
 
-	public static TransferContent of(Item itemToTransfer, int itemAmount){
-		return new TransferContent(itemToTransfer,itemAmount);
+	public static TransferContent of(Item itemToTransfer, int itemAmount, Transfer transfer){
+		return new TransferContent(itemToTransfer,itemAmount,transfer);
 	}
 }
 

@@ -46,11 +46,11 @@ public class ItemController {
 		return Mappings.STOCK_FORM;
 	}
 
-	@GetMapping("full-stock")
-	@ResponseBody
-	public Map<Item, Map<Warehouse, Integer>> fullStock() {
-		return stockService.getFullStockListByItem();
-	}
+//	@GetMapping("full-stock")
+//	@ResponseBody
+//	public Map<Item, Map<Warehouse, Integer>> fullStock() {
+//		return stockService.getFullStockListByItem();
+//	}
 
 
 	// == post mappings ==
