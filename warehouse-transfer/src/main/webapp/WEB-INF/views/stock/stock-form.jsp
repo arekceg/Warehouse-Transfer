@@ -1,3 +1,5 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: arek
@@ -11,6 +13,17 @@
     <title>Stock Form</title>
 </head>
 <body>
+<form:form modelAttribute="stock" method="POST">
+    <c:set value="${stock.item}" var="item"/>
+    Item name: <form:input path="item.name"/>
+    <br><br>
+    Item amount: <form:input path="itemStock"/>
+    <br><br>
+    Warehouse: <form:select path="warehouse.id" items="${warehouses}" itemLabel="name" itemValue="id"/>
+    <br><br>
+    <form:hidden path="stockType" value="AVAILABLE"/>
+    <input type="submit" value="ADD"/>
+</form:form>
 
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.arek.warehousetransfer.warehouse;
 import com.arek.warehousetransfer.stock.Stock;
 import com.arek.warehousetransfer.stock.StockService;
 import com.arek.warehousetransfer.stock.StockType;
+import com.arek.warehousetransfer.user.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,10 @@ public class WarehouseService {
 
 	public Warehouse findWarehouseById(Long id) {
 		return warehouseRepository.findById(id).orElse(null);
+	}
+
+	public Warehouse findWarehouseByManager(User manager){
+		return warehouseRepository.findWarehouseByManagerId(manager.getId());
 	}
 
 

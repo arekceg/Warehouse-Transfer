@@ -83,18 +83,23 @@ public class StockService {
 	// == methods for working with reserved and available stock ==
 
 
-	public void updateReservedStock(int amount, Item item, Warehouse warehouse) {
-		if (stockRepository.findStockByItemIdAndWarehouseIdAndStockType(item.getId(), warehouse.getId(), StockType.RESERVED) != null) {
-			stockRepository.changeStockOfItemInWarehouse(amount, item.getId(), warehouse.getId(), StockType.RESERVED.ordinal());
+
+	public void updateStockInWarehouse(int amount, Item item, Warehouse warehouse, StockType stockType, boolean creatingTransfer) {
+//		Stock stock = Stock.of(item,amount,warehouse,stockType);
+		if (stockRepository.findStockByItemIdAndWarehouseIdAndStockType(item.getId(), warehouse.getId(), stockType) != null) {
+			stockRepository.changeStockOfItemInWarehouse(amount, item.getId(), warehouse.getId(), stockType.toString());
 		} else {
-			stockRepository.save(Stock.of(item, amount, warehouse, StockType.RESERVED));
+			stockRepository.save(Stock.of(item, amount, warehouse, stockType));
 		}
-		stockRepository.changeStockOfItemInWarehouse(-amount, item.getId(), warehouse.getId(), StockType.AVAILABLE.ordinal());
+		if (creatingTransfer) {
+			stockRepository.changeStockOfItemInWarehouse(-amount, item.getId(), warehouse.getId(), StockType.AVAILABLE.toString());
+		}
 	}
+
 
 	public void updateReservedStockFromTransferData(Transfer transfer) {
 		transfer.getTransferContents().forEach(t -> {
-			updateReservedStock(t.getAmount(), t.getItem(), transfer.getSourceWarehouse());
+			updateStockInWarehouse(t.getAmount(), t.getItem(), transfer.getSourceWarehouse(),StockType.RESERVED, true);
 		});
 
 	}
@@ -139,7 +144,7 @@ public class StockService {
 	public WarehouseStockInformation getWarehouseStockInformationByWarehouse(Warehouse warehouse) {
 		List<Stock> availableStock = getFullStockListByWarehouseIdAndStockType(warehouse.getId(), StockType.AVAILABLE);
 		List<Stock> reservedStock = getFullStockListByWarehouseIdAndStockType(warehouse.getId(), StockType.RESERVED);
-		List<Stock> totalStock = calculateTotalStock(availableStock,reservedStock);
+		List<Stock> totalStock = calculateTotalStock(availableStock, reservedStock);
 		return WarehouseStockInformation.of(warehouse, availableStock, reservedStock, totalStock);
 
 	}

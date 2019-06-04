@@ -25,7 +25,7 @@ public class Stock {
 	private Long id;
 
 	@NotNull
-	@OneToOne
+	@OneToOne(cascade = CascadeType.PERSIST)
 	private Item item;
 
 	@NotNull
@@ -38,6 +38,7 @@ public class Stock {
 	private Warehouse warehouse;
 
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private StockType stockType;
 
 
@@ -67,7 +68,7 @@ public class Stock {
 		return "Stock(item=" + this.getItem() + ", itemStock=" + this.getItemStock() + "\n";
 	}
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	public StockType getStockType(){
 		return stockType;
 	}

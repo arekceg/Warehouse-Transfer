@@ -12,4 +12,5 @@ public interface WarehouseRepository extends JpaRepository<Warehouse,Long> {
 //	List<Warehouse> findAllWarehousesWithIdNotEqual(Long id);
 
 	List<Warehouse> findWarehousesByIdIsNot(Long id);
+	Warehouse findWarehouseByManagerId(Long id);
 }

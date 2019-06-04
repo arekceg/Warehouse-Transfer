@@ -16,7 +16,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 	@Modifying
 	@Query(value = "UPDATE stocks SET itemStock = itemStock+?1 WHERE item_id = ?2" +
 			" AND warehouse_id = ?3 AND stockType = ?4", nativeQuery = true)
-	void changeStockOfItemInWarehouse(int amount, Long itemId, Long warehouseId, int stockTypeOrdinal);
+	void changeStockOfItemInWarehouse(int amount, Long itemId, Long warehouseId, String stockTypeString);
 
 	@Query("SELECT s FROM Stock s WHERE s.item.id =?1 AND s.warehouse.id=?2")
 	List<Stock> getTotalStockByItemIdAndWarehouseId(Long itemId, Long warehouseId);

@@ -18,7 +18,7 @@ public class TransferContent {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Transfer transfer;
 
 	@NotNull

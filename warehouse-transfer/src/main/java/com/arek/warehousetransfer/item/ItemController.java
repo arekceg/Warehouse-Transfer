@@ -5,6 +5,7 @@ import com.arek.warehousetransfer.stock.StockService;
 import com.arek.warehousetransfer.utils.AttributeNames;
 import com.arek.warehousetransfer.utils.Mappings;
 import com.arek.warehousetransfer.warehouse.Warehouse;
+import com.arek.warehousetransfer.warehouse.WarehouseService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ public class ItemController {
 	// == fields ==
 	private ItemService itemService;
 	private StockService stockService;
+	private WarehouseService warehouseService;
 
 	// == get mappings ==
 	@GetMapping("")
@@ -40,18 +42,14 @@ public class ItemController {
 		return Mappings.ITEM_FORM;
 	}
 
-	@GetMapping("add-stock")
-	public String addStock(Model model) {
-		model.addAttribute(AttributeNames.STOCK, Stock.emptyStock());
+	@GetMapping("add")
+	public String addItem(Model model) {
+		Stock emptyStock = Stock.emptyStock();
+		emptyStock.setItem(Item.emptyItem());
+		model.addAttribute(AttributeNames.STOCK, emptyStock);
+		model.addAttribute("warehouses", warehouseService.findAllWarehouses());
 		return Mappings.STOCK_FORM;
 	}
-
-//	@GetMapping("full-stock")
-//	@ResponseBody
-//	public Map<Item, Map<Warehouse, Integer>> fullStock() {
-//		return stockService.getFullStockListByItem();
-//	}
-
 
 	// == post mappings ==
 	@PostMapping("")
@@ -64,6 +62,12 @@ public class ItemController {
 		}
 		itemService.saveItem(item);
 		return "redirect:/" + Mappings.ITEM + "/";
+	}
+
+	@PostMapping("add")
+	public String saveNewStock(@ModelAttribute @Valid Stock stock) {
+		stockService.saveStock(stock);
+		return "redirect:/admin/";
 	}
 
 	@PostMapping("edit/{id}")

@@ -80,6 +80,13 @@ public class Transfer {
 		updatedDate = LocalDate.now();
 	}
 
+	public boolean isAccepted(){
+		return isAccepted;
+	}
+
+	public boolean isChallenged(){
+		return isChallenged;
+	}
 
 	public String getIsAccepted() {
 		return isAccepted ? "yes" : "no";

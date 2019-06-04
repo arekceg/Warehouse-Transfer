@@ -1,13 +1,12 @@
 package com.arek.warehousetransfer.transfer;
 
-import com.arek.warehousetransfer.stock.Stock;
 import com.arek.warehousetransfer.stock.StockService;
-import com.arek.warehousetransfer.stock.StockType;
 import com.arek.warehousetransfer.utils.Mappings;
 import com.arek.warehousetransfer.warehouse.Warehouse;
 import com.arek.warehousetransfer.warehouse.WarehouseService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("transfer")
@@ -26,27 +24,40 @@ public final class TransferController {
 	private final StockService stockService;
 	private final WarehouseService warehouseService;
 	private final TransferService transferService;
-
-	@GetMapping("")
-	public String showAllTransfers(Model model) {
-		model.addAttribute("transfers", transferService.findAllTransfers());
+	@GetMapping("list/outgoing/{id}")
+	public String showAllOutgoingTransfers(Model model,
+	                                       @PathVariable Long id) {
+		model.addAttribute("transfersType", "outgoing");
+		model.addAttribute("transfers", transferService.findAllTransfersBySourceWarehouseId(id));
 		return Mappings.TRANSFER_LIST;
 	}
 
-	@GetMapping("{sourceId}")
-	public String createNewTransferForm(@PathVariable Long sourceId,
-	                                    Model model) {
-		Warehouse sourceWarehouse = warehouseService.findWarehouseById(sourceId);
-		List<Stock> availableStock = stockService.getFullStockListByWarehouseIdAndStockType(sourceId, StockType.AVAILABLE);
-		List<Stock> reservedStock = stockService.getFullStockListByWarehouseIdAndStockType(sourceId, StockType.RESERVED);
-		List<Stock> totalStock = stockService.calculateTotalStock(availableStock,reservedStock);
-//		WarehouseStockInformation stockInformation = stockService.getWarehouseStockInformationByWarehouse(sourceWarehouse);
+	@GetMapping("list/incoming/{id}")
+	public String showAllIncomingTransfers(Model model,
+	                                       @PathVariable Long id) {
+
+		model.addAttribute("transfersType", "incoming");
+		model.addAttribute("transfers", transferService.findAllUnacceptedTransfersByDestinationWarehouseId(id));
+		return Mappings.TRANSFER_LIST;
+	}
+
+//	@GetMapping("list/all/{id}")
+//	public String showAllTransfers(Model model,
+//	                               @PathVariable Long id) {
+//		Warehouse sourceWarehouse = warehouseService.findWarehouseById(id);
+//		model.addAttribute("warehouseStockInfo", stockService.getWarehouseStockInformationByWarehouse(sourceWarehouse));
+//		model.addAttribute("outgoingTransfersHistory", transferService.findAllTransfersBySourceWarehouseId(id));
+//		model.addAttribute("incomingTransfersHistory", transferService.findAllUnacceptedTransfersByDestinationWarehouseId(id));
+//		return "transfer/transfer-all";
+//	}
+
+	@GetMapping("new")
+	public String createNewTransferForm(Model model,
+	                                    @SessionAttribute("currentWarehouseId") String id) {
+		Warehouse sourceWarehouse = warehouseService.findWarehouseById(NumberUtils.toLong(id));
 		model.addAttribute("warehouseStockInfo", stockService.getWarehouseStockInformationByWarehouse(sourceWarehouse));
 		model.addAttribute("sourceWarehouse", sourceWarehouse);
-//		model.addAttribute("availableStock", availableStock);
-//		model.addAttribute("reservedStock", reservedStock);
-//		model.addAttribute("totalStock", totalStock);
-		model.addAttribute("warehouses", warehouseService.findWarehousesWithIdNotEqual(sourceId));
+		model.addAttribute("warehouses", warehouseService.findWarehousesWithIdNotEqual(sourceWarehouse.getId()));
 		model.addAttribute("transfer", Transfer.emptyTransfer());
 		return Mappings.TRANSFER_FORM;
 	}
@@ -58,22 +69,38 @@ public final class TransferController {
 		return Mappings.TRANSFER_DETAILS;
 	}
 
+	@PostMapping("accept")
+	public String acceptTransfer(@ModelAttribute("transferId") TransferIdWrapper transferIdWrapper) {
+		Long transferId = transferIdWrapper.getId();
+		Warehouse destinationWarehouse = transferService.findTransferById(transferId).getDestinationWarehouse();
+		transferService.acceptTransfer(transferId);
+		return "redirect:/warehouse/" + destinationWarehouse.getId();
+	}
+
+	@PostMapping("delete")
+	public String deleteTransfer(@ModelAttribute("transferId") TransferIdWrapper transferIdWrapper,
+	                             HttpServletRequest request){
+		String referer = request.getHeader("Referer");
+		transferService.deleteTransfer(transferIdWrapper.getId());
+		return "redirect:"+referer;
+	}
+
+
 //	@GetMapping("test")
 //	@ResponseBody
 //	public String test(){
 //	}
 
-	@PostMapping(value = "{sourceId}")
+	@PostMapping("new")
 	public String createNewTransfer(HttpServletRequest req,
 	                                @ModelAttribute @Valid Transfer transfer,
-	                                BindingResult result,
-	                                @PathVariable Long sourceId) {
+	                                BindingResult result){
 		if (result.hasErrors()) {
-			return "redirect:/transfer/"+sourceId.toString();
+			return "redirect:/transfer";
 		}
 		transferService.saveTransfer(transferService.populateTransferDataFromRequestBody(req, transfer));
 		stockService.updateReservedStockFromTransferData(transfer);
-		return "redirect:/" + Mappings.TRANSFER + "/";
+		return "redirect:/warehouse/" + transfer.getSourceWarehouse().getId().toString();
 	}
 
 }

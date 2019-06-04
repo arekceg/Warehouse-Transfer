@@ -1,18 +1,18 @@
 package com.arek.warehousetransfer.user;
 
-import com.arek.warehousetransfer.validators.AdminOrManager;
 import com.arek.warehousetransfer.warehouse.Warehouse;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -24,18 +24,21 @@ public class User {
 	private String name;
 
 	@NotBlank
-    @Column(unique = true, nullable = false)
+	@Column(unique = true, nullable = false)
 	private String login;
 
 	@NotBlank
 	@Column(nullable = false)
 	private String password;
 
-	@NotNull /*used instead of @NotEmpty because this list can be empty, can't be null*/
-	@OneToMany(mappedBy = "manager")
-	private List<Warehouse> warehouses;
+//	@NotNull
+	@OneToOne
+	private Warehouse warehouse;
 
 	@NotNull
 	private boolean isAdmin;
 
+	public static User empty() {
+		return new User();
+	}
 }
