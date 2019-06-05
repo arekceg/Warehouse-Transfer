@@ -2,6 +2,7 @@ package com.arek.warehousetransfer.warehouse;
 
 import com.arek.warehousetransfer.stock.Stock;
 import com.arek.warehousetransfer.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,15 +30,16 @@ public class Warehouse {
 	private String name;
 
 	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
+//	@JsonIgnore
 	private User manager;
-
 //	@NotNull
 	@OneToMany
 			(mappedBy = "warehouse")
 	private List<Stock> stocks;
 
 	@Transient
+	@JsonIgnore
 	private String warehouseAndManager;
 
 	public String getWarehouseAndManager() {

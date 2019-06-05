@@ -3,6 +3,7 @@ package com.arek.warehousetransfer.stock;
 import com.arek.warehousetransfer.item.Item;
 import com.arek.warehousetransfer.item.ItemService;
 import com.arek.warehousetransfer.transfer.Transfer;
+import com.arek.warehousetransfer.utils.Mappings;
 import com.arek.warehousetransfer.warehouse.Warehouse;
 import com.arek.warehousetransfer.warehouse.WarehouseService;
 import com.arek.warehousetransfer.warehouse.WarehouseStockInformation;
@@ -10,6 +11,7 @@ import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +87,6 @@ public class StockService {
 	// == methods for working with reserved and available stock ==
 
 
-
 	public void updateStockInWarehouse(int amount, Item item, Warehouse warehouse, StockType stockType, boolean creatingTransfer) {
 //		Stock stock = Stock.of(item,amount,warehouse,stockType);
 		if (stockRepository.findStockByItemIdAndWarehouseIdAndStockType(item.getId(), warehouse.getId(), stockType) != null) {
@@ -101,7 +102,7 @@ public class StockService {
 
 	public void updateReservedStockFromTransferData(Transfer transfer) {
 		transfer.getTransferContents().forEach(t -> {
-			updateStockInWarehouse(t.getAmount(), t.getItem(), transfer.getSourceWarehouse(),StockType.RESERVED, true);
+			updateStockInWarehouse(t.getAmount(), t.getItem(), transfer.getSourceWarehouse(), StockType.RESERVED, true);
 		});
 
 	}
@@ -144,10 +145,8 @@ public class StockService {
 //	}
 
 	public WarehouseStockInformation getWarehouseStockInformationByWarehouse(Warehouse warehouse) {
-		List<Stock> availableStock = getFullStockListByWarehouseIdAndStockType(warehouse.getId(), StockType.AVAILABLE);
-		List<Stock> reservedStock = getFullStockListByWarehouseIdAndStockType(warehouse.getId(), StockType.RESERVED);
-		List<Stock> totalStock = calculateTotalStock(availableStock, reservedStock);
-		return WarehouseStockInformation.of(warehouse, availableStock, reservedStock, totalStock);
-
+		final String uri = Mappings.BACKEND_ADRESS + "/warehouse/stockinformation/" + warehouse.getId().toString();
+		RestTemplate restTemplate = new RestTemplate();
+		return restTemplate.getForObject(uri,WarehouseStockInformation.class);
 	}
 }

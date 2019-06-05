@@ -21,26 +21,31 @@ public class WarehouseController {
 	private StockService stockService;
 	private TransferService transferService;
 
-	@GetMapping("")
+	// == WORKS ==
+	@GetMapping("{id}") // ID FOR DEBUG PURPOSES
 	public String showWarehouseDetails(Model model,
-	                                   @AuthenticationPrincipal CurrentUser customUser) {
-		Warehouse currentWarehouse= warehouseService.findWarehouseByManager(customUser.getUser());
-		Long currentWarehouseId = currentWarehouse.getId();
-		model.addAttribute("currentWarehouseId", currentWarehouseId);
+//	                                   @AuthenticationPrincipal CurrentUser customUser) {
+                                       @PathVariable Long id){
+//		Warehouse currentWarehouse= warehouseService.findWarehouseByManager(customUser.getUser());
+		Warehouse currentWarehouse= warehouseService.findWarehouseById(id);
+		model.addAttribute("currentWarehouseId", id);
 		model.addAttribute("transferId", TransferIdWrapper.empty());
+		// == WORKS ==
 		model.addAttribute("warehouseStockInfo", stockService.getWarehouseStockInformationByWarehouse(currentWarehouse));
-		model.addAttribute("outgoingTransfers", transferService.findAllUnacceptedTransfersBySourceWarehouseId(currentWarehouseId));
-		model.addAttribute("incomingTransfers", transferService.findAllUnacceptedTransfersByDestinationWarehouseId(currentWarehouseId));
+        // == WORKS ==
+		model.addAttribute("outgoingTransfers", transferService.findAllUnacceptedTransfersBySourceWarehouseId(id));
+        // == WORKS ==
+		model.addAttribute("incomingTransfers", transferService.findAllUnacceptedTransfersByDestinationWarehouseId(id));
 		return "warehouse/warehouse-home";
 	}
 
-	@GetMapping("history")
+    // == WORKS ==
+	@GetMapping("{id}/history") // ID FOR DEBUG PURPOSES
 	public String showWarehouseTransactionHistory(Model model,
-	                                              @AuthenticationPrincipal CurrentUser customUser) {
-		Warehouse currentWarehouse= warehouseService.findWarehouseByManager(customUser.getUser());
-		Long currentWarehouseId = currentWarehouse.getId();
-		model.addAttribute("outgoingTransfersHistory", transferService.findAllTransfersBySourceWarehouseId(currentWarehouseId));
-		model.addAttribute("incomingTransfersHistory", transferService.findAllTransfersByDestinationWarehouseId(currentWarehouseId));
+//	                                              @AuthenticationPrincipal CurrentUser customUser) {
+                                                  @PathVariable Long id){
+		model.addAttribute("outgoingTransfersHistory", transferService.findAllTransfersBySourceWarehouseId(id));
+		model.addAttribute("incomingTransfersHistory", transferService.findAllTransfersByDestinationWarehouseId(id));
 		return "warehouse/warehouse-history";
 	}
 //	@GetMapping("{id}")
@@ -62,12 +67,12 @@ public class WarehouseController {
 //		model.addAttribute("incomingTransfersHistory", transferService.findAllTransfersByDestinationWarehouseId(id));
 //		return "warehouse/warehouse-history";
 //	}
-
-	@PostMapping("add")
-	public String addWarehouse(@ModelAttribute("warehouse") Warehouse warehouse){
-		User manager = warehouse.getManager();
-		manager.setWarehouse(warehouse);
-		warehouseService.saveWarehouse(warehouse);
-		return "redirect:/admin/";
-	}
+//
+//	@PostMapping("add")
+//	public String addWarehouse(@ModelAttribute("warehouse") Warehouse warehouse){
+//		User manager = warehouse.getManager();
+//		manager.setWarehouse(warehouse);
+//		warehouseService.saveWarehouse(warehouse);
+//		return "redirect:/admin/";
+//	}
 }

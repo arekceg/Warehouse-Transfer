@@ -20,6 +20,10 @@ public class UserService {
 	private final RoleRepository roleRepository;
 	private final BCryptPasswordEncoder passwordEncoder;
 
+	public User findUserById(Long id){
+		return userRepository.findById(id).orElse(null);
+	}
+
 	public List<User> findAllUsers(){
 		return userRepository.findAll();
 	}

@@ -1,6 +1,7 @@
 package com.arek.warehousetransfer.transfer;
 
 import com.arek.warehousetransfer.warehouse.Warehouse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -84,10 +85,10 @@ public class Transfer {
 	}
 
 	public String getIsAccepted() {
-		return isAccepted ? "yes" : "no";
+		return isAccepted ? "true" : "false";
 	}
 
 	public String getIsChallenged() {
-		return isChallenged ? "yes" : "no";
+		return isChallenged ? "true" : "false";
 	}
 }

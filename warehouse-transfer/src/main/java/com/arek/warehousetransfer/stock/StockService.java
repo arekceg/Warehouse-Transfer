@@ -79,7 +79,7 @@ public class StockService {
 //		List<Item> allItems = itemService.findAllItems();
 //		return allItems.stream()
 //				.collect(Collectors.toMap(i -> i, i -> getItemStockMapByItemId(i.getId())));
-//
+//0
 //	}
 
 	// == methods for working with reserved and available stock ==

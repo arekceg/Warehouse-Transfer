@@ -2,6 +2,7 @@ package com.arek.warehousetransfer.user;
 
 import com.arek.warehousetransfer.user.Role.Role;
 import com.arek.warehousetransfer.warehouse.Warehouse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,7 +41,8 @@ public class User {
 	private Set<Role> roles;
 
 //	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JsonIgnore
 	private Warehouse warehouse;
 
 	public User(@NotBlank String username, @NotBlank String password, Set<Role> roles) {

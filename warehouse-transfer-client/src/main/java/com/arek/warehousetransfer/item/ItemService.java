@@ -1,7 +1,9 @@
 package com.arek.warehousetransfer.item;
 
+import com.arek.warehousetransfer.utils.Mappings;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -14,15 +16,18 @@ public class ItemService {
 	private ItemRepository itemRepository;
 
 	// == public methods ==
-	public List<Item> findAllItems(){
-		return itemRepository.findAll();
+	public List<Item> findAllItems() {
+		final String url = Mappings.BACKEND_ADRESS + "/item/all";
+		RestTemplate restTemplate = new RestTemplate();
+		ItemListWrapper response = restTemplate.getForObject(url, ItemListWrapper.class);
+		return response.getItemList();
 	}
 
-	public Item findItemById(Long id){
+	public Item findItemById(Long id) {
 		return itemRepository.findById(id).orElse(null);
 	}
 
-	public void saveItem(Item item){
+	public void saveItem(Item item) {
 		itemRepository.save(item);
 	}
 }

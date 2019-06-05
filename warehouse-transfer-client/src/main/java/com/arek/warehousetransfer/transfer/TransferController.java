@@ -11,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Map;
 
 @Controller
 @RequestMapping("transfer")
@@ -24,22 +26,7 @@ public final class TransferController {
 	private final StockService stockService;
 	private final WarehouseService warehouseService;
 	private final TransferService transferService;
-	@GetMapping("list/outgoing/{id}")
-	public String showAllOutgoingTransfers(Model model,
-	                                       @PathVariable Long id) {
-		model.addAttribute("transfersType", "outgoing");
-		model.addAttribute("transfers", transferService.findAllTransfersBySourceWarehouseId(id));
-		return Mappings.TRANSFER_LIST;
-	}
 
-	@GetMapping("list/incoming/{id}")
-	public String showAllIncomingTransfers(Model model,
-	                                       @PathVariable Long id) {
-
-		model.addAttribute("transfersType", "incoming");
-		model.addAttribute("transfers", transferService.findAllUnacceptedTransfersByDestinationWarehouseId(id));
-		return Mappings.TRANSFER_LIST;
-	}
 
 //	@GetMapping("list/all/{id}")
 //	public String showAllTransfers(Model model,
@@ -51,17 +38,22 @@ public final class TransferController {
 //		return "transfer/transfer-all";
 //	}
 
+    // == WORKS ==
 	@GetMapping("new")
 	public String createNewTransferForm(Model model,
 	                                    @SessionAttribute("currentWarehouseId") String id) {
+		// == UPDATED ==
 		Warehouse sourceWarehouse = warehouseService.findWarehouseById(NumberUtils.toLong(id));
+		// == WORKS ==
 		model.addAttribute("warehouseStockInfo", stockService.getWarehouseStockInformationByWarehouse(sourceWarehouse));
 		model.addAttribute("sourceWarehouse", sourceWarehouse);
+		// == WORKS ==
 		model.addAttribute("warehouses", warehouseService.findWarehousesWithIdNotEqual(sourceWarehouse.getId()));
 		model.addAttribute("transfer", Transfer.emptyTransfer());
 		return Mappings.TRANSFER_FORM;
 	}
 
+    // == WORKS ==
 	@GetMapping("details/{id}")
 	public String getTransferDetails(@PathVariable Long id,
 	                                 Model model) {
@@ -69,20 +61,22 @@ public final class TransferController {
 		return Mappings.TRANSFER_DETAILS;
 	}
 
+    // == WORKS ==
 	@PostMapping("accept")
 	public String acceptTransfer(@ModelAttribute("transferId") TransferIdWrapper transferIdWrapper) {
 		Long transferId = transferIdWrapper.getId();
-		Warehouse destinationWarehouse = transferService.findTransferById(transferId).getDestinationWarehouse();
+//		Warehouse destinationWarehouse = transferService.findTransferById(transferId).getDestinationWarehouse();
 		transferService.acceptTransfer(transferId);
-		return "redirect:/warehouse/";
+		return "redirect:/warehouse/1";
 	}
 
+	// == FIXING ==
 	@PostMapping("delete")
 	public String deleteTransfer(@ModelAttribute("transferId") TransferIdWrapper transferIdWrapper,
-	                             HttpServletRequest request){
+	                             HttpServletRequest request) {
 		String referer = request.getHeader("Referer");
 		transferService.deleteTransfer(transferIdWrapper.getId());
-		return "redirect:"+referer;
+		return "redirect:" + referer;
 	}
 
 
@@ -91,16 +85,25 @@ public final class TransferController {
 //	public String test(){
 //	}
 
+    // == WORKS ==
 	@PostMapping("new")
 	public String createNewTransfer(HttpServletRequest req,
 	                                @ModelAttribute @Valid Transfer transfer,
-	                                BindingResult result){
+	                                BindingResult result) {
 		if (result.hasErrors()) {
 			return "redirect:/transfer";
 		}
-		transferService.saveTransfer(transferService.populateTransferDataFromRequestBody(req, transfer));
-		stockService.updateReservedStockFromTransferData(transfer);
-		return "redirect:/warehouse/";
+
+		Transfer populatedTransfer = transferService.populateTransferDataFromRequestBody(req,transfer);
+
+		final String uri = Mappings.BACKEND_ADRESS + "/transfer/new";
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.postForEntity(
+				uri,
+				populatedTransfer,
+				Transfer.class
+		);
+		return "redirect:/warehouse/1";
 	}
 
 }

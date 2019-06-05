@@ -29,8 +29,10 @@ public class ItemController {
 	private WarehouseService warehouseService;
 
 	// == get mappings ==
-	// == REST CONTROLERS ==
 
+	// == REST CONTROLLERS ==
+
+	//REST
 	@GetMapping("all")
 	public ItemListWrapper findAllItemsRest(){
 		ItemListWrapper itemListWrapper = ItemListWrapper.of(itemService.findAllItems());

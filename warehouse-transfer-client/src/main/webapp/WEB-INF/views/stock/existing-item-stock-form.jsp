@@ -19,7 +19,7 @@
     <br><br>
     Item amount: <form:input path="itemStock" type = "number"/>
     <br><br>
-    Warehouse: <form:select path="warehouse" items="${warehouses}" itemLabel="name" itemValue="id"/>
+    Warehouse: <form:select path="warehouse.id" items="${warehouses}" itemLabel="name" itemValue="id"/>
     <br><br>
     <form:hidden path="stockType" value="AVAILABLE"/>
     <input type="submit" value="ADD"/>

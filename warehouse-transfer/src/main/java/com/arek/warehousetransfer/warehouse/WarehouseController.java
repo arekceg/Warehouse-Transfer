@@ -5,13 +5,18 @@ import com.arek.warehousetransfer.transfer.TransferIdWrapper;
 import com.arek.warehousetransfer.transfer.TransferService;
 import com.arek.warehousetransfer.user.CurrentUser;
 import com.arek.warehousetransfer.user.User;
+import com.arek.warehousetransfer.user.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+
+@RestController
 @AllArgsConstructor
 @RequestMapping("warehouse")
 @SessionAttributes("currentWarehouseId")
@@ -20,6 +25,7 @@ public class WarehouseController {
 	private WarehouseService warehouseService;
 	private StockService stockService;
 	private TransferService transferService;
+	private UserService userService;
 
 	@GetMapping("")
 	public String showWarehouseDetails(Model model,
@@ -43,6 +49,24 @@ public class WarehouseController {
 		model.addAttribute("incomingTransfersHistory", transferService.findAllTransfersByDestinationWarehouseId(currentWarehouseId));
 		return "warehouse/warehouse-history";
 	}
+
+	//REST
+
+	@GetMapping("{id}")
+	public Warehouse getWarehouse(@PathVariable Long id){
+		return warehouseService.findWarehouseById(id);
+	}
+
+	@GetMapping("all")
+	public List<Warehouse> getAllWarehouses(){
+		return warehouseService.findAllWarehouses();
+	}
+
+	@GetMapping("stockinformation/{id}")
+	public WarehouseStockInformation getStockInformation(@PathVariable Long id){
+		Warehouse warehouse = warehouseService.findWarehouseById(id);
+		return stockService.getWarehouseStockInformationByWarehouse(warehouse);
+	}
 //	@GetMapping("{id}")
 //	public String showWarehouseDetails(Model model,
 //	                                   @PathVariable Long id) {
@@ -63,11 +87,12 @@ public class WarehouseController {
 //		return "warehouse/warehouse-history";
 //	}
 
+	//REST POST
 	@PostMapping("add")
-	public String addWarehouse(@ModelAttribute("warehouse") Warehouse warehouse){
-		User manager = warehouse.getManager();
+	public ResponseEntity addWarehouse(@RequestBody Warehouse warehouse){
+		User manager = userService.findUserById(warehouse.getManager().getId());
 		manager.setWarehouse(warehouse);
 		warehouseService.saveWarehouse(warehouse);
-		return "redirect:/admin/";
+		return new ResponseEntity(HttpStatus.CREATED);
 	}
 }

@@ -2,6 +2,7 @@ package com.arek.warehousetransfer.stock;
 
 import com.arek.warehousetransfer.item.Item;
 import com.arek.warehousetransfer.warehouse.Warehouse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,6 +36,7 @@ public class Stock {
 
 	@NotNull
 	@ManyToOne
+	@JsonIgnore
 	private Warehouse warehouse;
 
 	@NotNull

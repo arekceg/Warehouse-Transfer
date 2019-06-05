@@ -89,10 +89,10 @@ public class Transfer {
 	}
 
 	public String getIsAccepted() {
-		return isAccepted ? "yes" : "no";
+		return isAccepted ? "true" : "false";
 	}
 
 	public String getIsChallenged() {
-		return isChallenged ? "yes" : "no";
+		return isChallenged ? "true" : "false";
 	}
 }

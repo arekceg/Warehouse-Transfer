@@ -12,10 +12,10 @@
     <title>Add warehouse</title>
 </head>
 <body>
-<form:form modelAttribute="warehouse" method="POST" action="/warehouse/add">
+<form:form modelAttribute="warehouse" method="POST">
     Warehouse name: <form:input path="name"/>
     <br><br>
-    Warehouse manager: <form:select path="manager" items="${users}" itemValue="id" itemLabel="name"/>
+    Warehouse manager: <form:select path="manager.id" items="${users}" itemValue="id" itemLabel="name"/>
    <br><br>
     <input type="submit" value="Add"/>
 </form:form>

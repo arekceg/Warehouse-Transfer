@@ -1,6 +1,7 @@
 package com.arek.warehousetransfer.transfer;
 
 import com.arek.warehousetransfer.item.Item;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class TransferContent {
 	private Long id;
 
 	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Transfer transfer;
 
 	@NotNull

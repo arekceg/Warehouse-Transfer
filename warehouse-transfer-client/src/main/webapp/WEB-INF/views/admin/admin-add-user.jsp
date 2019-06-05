@@ -12,7 +12,7 @@
     <title>Add User</title>
 </head>
 <body>
-<form:form modelAttribute="user" method="POST" action="/user/add">
+<form:form modelAttribute="user" method="POST" >
     Name: <form:input path="name"/>
     <br><br>
     Login: <form:input path="username"/>

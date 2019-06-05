@@ -4,12 +4,17 @@ import com.arek.warehousetransfer.item.Item;
 import com.arek.warehousetransfer.item.ItemService;
 import com.arek.warehousetransfer.stock.StockService;
 import com.arek.warehousetransfer.stock.StockType;
+import com.arek.warehousetransfer.utils.Mappings;
 import com.arek.warehousetransfer.warehouse.Warehouse;
 import com.arek.warehousetransfer.warehouse.WarehouseRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -30,7 +35,7 @@ public class TransferService {
 
 	// == public methods ==
 
-//	public void deleteTransfer(Transfer transfer){
+	//	public void deleteTransfer(Transfer transfer){
 //		transferRepository.delete(transfer);
 //	}
 	public List<Transfer> findAllTransfers() {
@@ -38,18 +43,55 @@ public class TransferService {
 	}
 
 	public List<Transfer> findAllTransfersBySourceWarehouseId(Long id) {
-		return transferRepository.findTransfersBySourceWarehouseId(id);
+		final String uri = Mappings.BACKEND_ADRESS + "/transfer/list/outgoing/" + id.toString() + "/all";
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<List<Transfer>> response = restTemplate.exchange(
+				uri,
+				HttpMethod.GET,
+				null,
+				new ParameterizedTypeReference<List<Transfer>>() {
+				}
+		);
+		return response.getBody();
+	}
+
+	public List<Transfer> findAllTransfersByDestinationWarehouseId(Long id) {
+		final String uri = Mappings.BACKEND_ADRESS + "/transfer/list/incoming/" + id.toString() + "/all";
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<List<Transfer>> response = restTemplate.exchange(
+				uri,
+				HttpMethod.GET,
+				null,
+				new ParameterizedTypeReference<List<Transfer>>() {
+				}
+		);
+		return response.getBody();
 	}
 
 	public List<Transfer> findAllUnacceptedTransfersBySourceWarehouseId(Long id) {
-		return transferRepository.findTransfersBySourceWarehouseIdAndIsAccepted(id, false);
-	}
-	public List<Transfer> findAllTransfersByDestinationWarehouseId(Long id) {
-		return transferRepository.findTransfersByDestinationWarehouseId(id);
+		final String uri = Mappings.BACKEND_ADRESS + "/transfer/list/outgoing/" + id.toString() + "/unaccepted";
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<List<Transfer>> response = restTemplate.exchange(
+				uri,
+				HttpMethod.GET,
+				null,
+				new ParameterizedTypeReference<List<Transfer>>() {
+				}
+		);
+		return response.getBody();
 	}
 
 	public List<Transfer> findAllUnacceptedTransfersByDestinationWarehouseId(Long id) {
-		return transferRepository.findTransfersByDestinationWarehouseIdAndIsAccepted(id, false);
+		final String uri = Mappings.BACKEND_ADRESS + "/transfer/list/incoming/" + id.toString() + "/unaccepted";
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<List<Transfer>> response = restTemplate.exchange(
+				uri,
+				HttpMethod.GET,
+				null,
+				new ParameterizedTypeReference<List<Transfer>>() {
+				}
+		);
+		return response.getBody();
 	}
 
 	public void saveTransfer(Transfer transfer) {
@@ -81,45 +123,27 @@ public class TransferService {
 	}
 
 	public Transfer findTransferById(Long id) {
-		return transferRepository.findById(id).orElse(null);
+		final String uri = Mappings.BACKEND_ADRESS + "/transfer/" + id.toString();
+		RestTemplate restTemplate = new RestTemplate();
+		return restTemplate.getForObject(
+				uri,
+				Transfer.class
+		);
 	}
 
-	public void deleteTransfer(Long id){
-		Transfer transfer = findTransferById(id);
-		Warehouse sourceWarehouse = transfer.getSourceWarehouse();
-		Warehouse destinationWarehouse = transfer.getDestinationWarehouse();
-		List<TransferContent> transferContents = transfer.getTransferContents();
-		transferContents.forEach(tc -> {
-			Item transferItem = tc.getItem();
-			int itemAmount = tc.getAmount();
-			//2.    Remove reserved stock from source warehouse
-			stockService.updateStockInWarehouse(-itemAmount, transferItem, sourceWarehouse, StockType.RESERVED, false);
-			stockService.updateStockInWarehouse(itemAmount, transferItem, sourceWarehouse, StockType.AVAILABLE, false);
-		});
-		transferRepository.delete(transfer);
+	public void deleteTransfer(Long id) {
+		final String uri = Mappings.BACKEND_ADRESS + "/transfer/" + id + "/delete";
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.delete(uri);
 	}
 
 	public void acceptTransfer(Long id) {
-		Transfer transfer = findTransferById(id);
-		if (!transfer.isAccepted()) {
-			Warehouse sourceWarehouse = transfer.getSourceWarehouse();
-			Warehouse destinationWarehouse = transfer.getDestinationWarehouse();
-			//1.    Get transfer content
-			List<TransferContent> transferContents = transfer.getTransferContents();
-			transferContents.forEach(tc -> {
-				Item transferItem = tc.getItem();
-				int itemAmount = tc.getAmount();
-				//2.    Remove reserved stock from source warehouse
-				stockService.updateStockInWarehouse(-itemAmount, transferItem, sourceWarehouse, StockType.RESERVED, false);
-				stockService.updateStockInWarehouse(itemAmount, transferItem, destinationWarehouse, StockType.AVAILABLE, false);
-			});
-			log.info("==================================");
-			log.info("Transfer accepted  {}", transfer.getId());
-			setTransferToAccepted(id);
-		}
+		final String uri = Mappings.BACKEND_ADRESS + "/transfer/" + id + "/accept";
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.put(uri,Transfer.class);
+	}
 //		3.    Add that reserved stock to destination warehouse as available stock
 //		          * find corresponding stock in destination warehouse and increase it's available stock
 //		          * create a new stock in destination table if necessary
 
-	}
 }

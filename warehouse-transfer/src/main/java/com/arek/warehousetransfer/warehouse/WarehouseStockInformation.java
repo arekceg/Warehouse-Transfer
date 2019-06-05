@@ -14,6 +14,9 @@ public class WarehouseStockInformation {
 	private List<Stock> reservedStock;
 	private List<Stock> totalStock;
 
+	public WarehouseStockInformation() {
+	}
+
 	private WarehouseStockInformation(Warehouse warehouse, List<Stock> availableStock, List<Stock> reservedStock, List<Stock> totalStock) {
 		this.warehouse = warehouse;
 		this.availableStock = availableStock;

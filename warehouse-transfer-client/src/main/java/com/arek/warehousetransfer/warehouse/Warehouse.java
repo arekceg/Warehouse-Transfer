@@ -2,6 +2,7 @@ package com.arek.warehousetransfer.warehouse;
 
 import com.arek.warehousetransfer.stock.Stock;
 import com.arek.warehousetransfer.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,9 +34,11 @@ public class Warehouse {
 //	@NotNull
 	@OneToMany
 			(mappedBy = "warehouse")
+	@JsonIgnore
 	private List<Stock> stocks;
 
 	@Transient
+	@JsonIgnore
 	private String warehouseAndManager;
 
 	public String getWarehouseAndManager() {
