@@ -3,6 +3,10 @@ package com.arek.warehousetransfer.warehouse;
 import com.arek.warehousetransfer.stock.Stock;
 import com.arek.warehousetransfer.user.User;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,7 +15,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "warehouses")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Warehouse {
 	// == fields ==
 
@@ -23,15 +29,27 @@ public class Warehouse {
 	private String name;
 
 	@NotNull
-	@ManyToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private User manager;
 
-	@NotNull
+//	@NotNull
 	@OneToMany
 			(mappedBy = "warehouse")
 	private List<Stock> stocks;
 
-//	@NotNull
+	@Transient
+	private String warehouseAndManager;
+
+	public String getWarehouseAndManager() {
+		return name + " : " + manager.getName();
+	}
+
+	public static Warehouse empty(){
+		return new Warehouse();
+	}
+
+
+	//	@NotNull
 //	@OneToMany
 //	private List<Stock> availableStock;
 //

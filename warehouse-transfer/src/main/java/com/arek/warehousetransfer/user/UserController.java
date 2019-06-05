@@ -10,33 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @AllArgsConstructor
-@SessionAttributes("loggedUser")
+@RequestMapping("user")
 public class UserController {
 
 	private UserService userService;
 
-
-	@GetMapping("login")
-	public String loginScreen(Model model) {
-		model.addAttribute("userList", userService.findAllUsers());
-		model.addAttribute("user", User.empty());
-		return "user/login";
-
-	}
-
-	@GetMapping("home/{id}")
-	public String homeScreen(@PathVariable Long id) {
-
-
-		return "user/home";
-	}
-
-
-	@PostMapping("login")
-	public String logged(@ModelAttribute User user,
-	                     HttpServletRequest request) {
-		WebUtils.setSessionAttribute(request, "loggedUser", user);
-//		model.addAttribute("loggedUser",user);
-		return "redirect:/home";
+	@PostMapping("add")
+	public String addUser(@ModelAttribute("user") User user){
+		userService.saveUser(user);
+		return "redirect:/admin/";
 	}
 }

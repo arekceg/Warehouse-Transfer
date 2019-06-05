@@ -22,7 +22,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 	List<Stock> getTotalStockByItemIdAndWarehouseId(Long itemId, Long warehouseId);
 
 
-	Stock findStockByItemIdAndWarehouseIdAndStockType(Long itemId, Long warehouseId, StockType stockType);
+	Stock findStockByItemIdAndWarehouseIdAndStockType(Long id, Long warehouseId, StockType stockType);
 
 	List<Stock> findByWarehouseIdAndStockType(Long id, StockType stockType);
 

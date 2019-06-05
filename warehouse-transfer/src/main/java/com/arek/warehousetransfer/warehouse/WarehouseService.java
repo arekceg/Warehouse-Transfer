@@ -15,6 +15,9 @@ public class WarehouseService {
 
 	private WarehouseRepository warehouseRepository;
 
+	public List<Warehouse> findAllWarehousesWithoutManagers(){
+		return warehouseRepository.findWarehousesByManagerNull();
+	}
 	public List<Warehouse> findAllWarehouses() {
 		return warehouseRepository.findAll();
 	}
@@ -23,6 +26,9 @@ public class WarehouseService {
 		return warehouseRepository.findWarehousesByIdIsNot(id);
 	}
 
+	public void saveWarehouse(Warehouse warehouse){
+		warehouseRepository.save(warehouse);
+	}
 	public Warehouse findWarehouseById(Long id) {
 		return warehouseRepository.findById(id).orElse(null);
 	}

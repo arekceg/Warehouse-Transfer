@@ -2,6 +2,7 @@ package com.arek.warehousetransfer.item;
 
 import com.arek.warehousetransfer.stock.Stock;
 import com.arek.warehousetransfer.stock.StockService;
+import com.arek.warehousetransfer.stock.StockType;
 import com.arek.warehousetransfer.utils.AttributeNames;
 import com.arek.warehousetransfer.utils.Mappings;
 import com.arek.warehousetransfer.warehouse.Warehouse;
@@ -13,10 +14,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 
-@Controller
+@RestController
 @AllArgsConstructor
 @RequestMapping(Mappings.ITEM)
 public class ItemController {
@@ -27,6 +29,16 @@ public class ItemController {
 	private WarehouseService warehouseService;
 
 	// == get mappings ==
+	// == REST CONTROLERS ==
+
+	@GetMapping("all")
+	public ItemListWrapper findAllItemsRest(){
+		ItemListWrapper itemListWrapper = ItemListWrapper.of(itemService.findAllItems());
+		return itemListWrapper;
+	}
+
+
+
 	@GetMapping("")
 //	@ResponseBody
 	public String getAllItems(Model model) {
@@ -42,14 +54,7 @@ public class ItemController {
 		return Mappings.ITEM_FORM;
 	}
 
-	@GetMapping("add")
-	public String addItem(Model model) {
-		Stock emptyStock = Stock.emptyStock();
-		emptyStock.setItem(Item.emptyItem());
-		model.addAttribute(AttributeNames.STOCK, emptyStock);
-		model.addAttribute("warehouses", warehouseService.findAllWarehouses());
-		return Mappings.STOCK_FORM;
-	}
+
 
 	// == post mappings ==
 	@PostMapping("")
@@ -64,11 +69,7 @@ public class ItemController {
 		return "redirect:/" + Mappings.ITEM + "/";
 	}
 
-	@PostMapping("add")
-	public String saveNewStock(@ModelAttribute @Valid Stock stock) {
-		stockService.saveStock(stock);
-		return "redirect:/admin/";
-	}
+
 
 	@PostMapping("edit/{id}")
 	public String updateItem(@ModelAttribute @Valid Item item,
