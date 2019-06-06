@@ -98,6 +98,7 @@ public class StockService {
 			stockRepository.changeStockOfItemInWarehouse(amount, item.getId(), warehouse.getId(), stockType.toString());
 		} else {
 			Stock stockToSave = Stock.of(item, amount, warehouseService.findWarehouseById(warehouse.getId()), stockType);
+			itemService.saveItem(item);
 			stockRepository.save(stockToSave);
 		}
 		if (creatingTransfer) {
