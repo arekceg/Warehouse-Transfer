@@ -39,7 +39,16 @@ public class TransferService {
 //		transferRepository.delete(transfer);
 //	}
 	public List<Transfer> findAllTransfers() {
-		return transferRepository.findAll();
+				final String uri = Mappings.BACKEND_ADRESS + "/transfer/all";
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<List<Transfer>> response = restTemplate.exchange(
+				uri,
+				HttpMethod.GET,
+				null,
+				new ParameterizedTypeReference<List<Transfer>>() {
+				}
+		);
+		return response.getBody();
 	}
 
 	public List<Transfer> findAllTransfersBySourceWarehouseId(Long id) {

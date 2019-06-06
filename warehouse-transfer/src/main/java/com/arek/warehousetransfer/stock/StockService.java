@@ -85,13 +85,20 @@ public class StockService {
 	// == methods for working with reserved and available stock ==
 
 
+	public void updateReservedStockFromTransferData(Transfer transfer) {
+		transfer.getTransferContents().forEach(t -> {
+			updateStockInWarehouse(t.getAmount(), t.getItem(), transfer.getSourceWarehouse(), StockType.RESERVED, true);
+		});
+
+	}
 
 	public void updateStockInWarehouse(int amount, Item item, Warehouse warehouse, StockType stockType, boolean creatingTransfer) {
 //		Stock stock = Stock.of(item,amount,warehouse,stockType);
 		if (stockRepository.findStockByItemIdAndWarehouseIdAndStockType(item.getId(), warehouse.getId(), stockType) != null) {
 			stockRepository.changeStockOfItemInWarehouse(amount, item.getId(), warehouse.getId(), stockType.toString());
 		} else {
-			stockRepository.save(Stock.of(item, amount, warehouse, stockType));
+			Stock stockToSave = Stock.of(item, amount, warehouseService.findWarehouseById(warehouse.getId()), stockType);
+			stockRepository.save(stockToSave);
 		}
 		if (creatingTransfer) {
 			stockRepository.changeStockOfItemInWarehouse(-amount, item.getId(), warehouse.getId(), StockType.AVAILABLE.toString());
@@ -99,12 +106,6 @@ public class StockService {
 	}
 
 
-	public void updateReservedStockFromTransferData(Transfer transfer) {
-		transfer.getTransferContents().forEach(t -> {
-			updateStockInWarehouse(t.getAmount(), t.getItem(), transfer.getSourceWarehouse(),StockType.RESERVED, true);
-		});
-
-	}
 
 	public List<Long> listUniqueItemsIdInWarehouse(Long warehouseId) {
 		return Lists.newArrayList(stockRepository.findItemsIdsByWarehouseId(warehouseId).stream()

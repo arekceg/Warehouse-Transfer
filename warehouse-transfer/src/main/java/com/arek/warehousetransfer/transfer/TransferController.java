@@ -52,6 +52,12 @@ public final class TransferController {
 		return transferService.findTransferById(id);
 	}
 
+	//REST UPDATED
+	@GetMapping("all")
+	public List<Transfer> getAllTransfers() {
+		return transferService.findAllTransfers();
+	}
+
 	//	@GetMapping("list/all/{id}")
 //	public String showAllTransfers(Model model,
 //	                               @PathVariable Long id) {
@@ -104,8 +110,8 @@ public final class TransferController {
 	@PostMapping("new")
 	public ResponseEntity<String> createNewTransfer(@RequestBody Transfer transfer) {
 
-		transferService.saveTransfer(transfer);
 		stockService.updateReservedStockFromTransferData(transfer);
+		transferService.saveTransfer(transfer);
 
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
@@ -118,7 +124,7 @@ public final class TransferController {
 	}
 
 	@DeleteMapping("{id}/delete")
-	public ResponseEntity<String> deleteTransfer(@PathVariable Long id){
+	public ResponseEntity<String> deleteTransfer(@PathVariable Long id) {
 		transferService.deleteTransfer(id);
 		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 	}

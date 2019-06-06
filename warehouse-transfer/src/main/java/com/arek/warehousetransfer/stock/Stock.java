@@ -26,11 +26,11 @@ public class Stock {
 	private Long id;
 
 	@NotNull
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne(cascade = CascadeType.MERGE)
 	private Item item;
 
 	@NotNull
-	@PositiveOrZero
+//	@PositiveOrZero
 	@Column(nullable = false)
 	private int itemStock;
 

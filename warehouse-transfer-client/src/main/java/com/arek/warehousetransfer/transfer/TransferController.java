@@ -70,7 +70,7 @@ public final class TransferController {
 		return "redirect:/warehouse/1";
 	}
 
-	// == FIXING ==
+    // == WORKS ==
 	@PostMapping("delete")
 	public String deleteTransfer(@ModelAttribute("transferId") TransferIdWrapper transferIdWrapper,
 	                             HttpServletRequest request) {
@@ -84,6 +84,7 @@ public final class TransferController {
 //	@ResponseBody
 //	public String test(){
 //	}
+
 
     // == WORKS ==
 	@PostMapping("new")
