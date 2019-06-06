@@ -22,12 +22,13 @@ public class WarehouseController {
 	private TransferService transferService;
 
 	// == WORKS ==
-	@GetMapping("{id}") // ID FOR DEBUG PURPOSES
+	@GetMapping("") // ID FOR DEBUG PURPOSES
 	public String showWarehouseDetails(Model model,
-//	                                   @AuthenticationPrincipal CurrentUser customUser) {
-                                       @PathVariable Long id){
-//		Warehouse currentWarehouse= warehouseService.findWarehouseByManager(customUser.getUser());
-		Warehouse currentWarehouse= warehouseService.findWarehouseById(id);
+	                                   @AuthenticationPrincipal CurrentUser customUser) {
+//                                       @PathVariable Long id){
+		Warehouse currentWarehouse= warehouseService.findWarehouseByManager(customUser.getUser());
+		Long id = currentWarehouse.getId();
+//		Warehouse currentWarehouse= warehouseService.findWarehouseById(id);
 		model.addAttribute("currentWarehouseId", id);
 		model.addAttribute("transferId", TransferIdWrapper.empty());
 		// == WORKS ==
@@ -40,10 +41,10 @@ public class WarehouseController {
 	}
 
     // == WORKS ==
-	@GetMapping("{id}/history") // ID FOR DEBUG PURPOSES
+	@GetMapping("/history") // ID FOR DEBUG PURPOSES
 	public String showWarehouseTransactionHistory(Model model,
 //	                                              @AuthenticationPrincipal CurrentUser customUser) {
-                                                  @PathVariable Long id){
+                                                  @SessionAttribute("currentWarehouseId") Long id){
 		model.addAttribute("outgoingTransfersHistory", transferService.findAllTransfersBySourceWarehouseId(id));
 		model.addAttribute("incomingTransfersHistory", transferService.findAllTransfersByDestinationWarehouseId(id));
 		return "warehouse/warehouse-history";
