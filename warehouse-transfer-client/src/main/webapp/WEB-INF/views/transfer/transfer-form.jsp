@@ -25,33 +25,35 @@
             Warehouse has no current stock
         </c:when>
         <c:otherwise>
-    <table border="1">
-    <tr>
-        <th>Item ID</th>
-        <th>Item Name</th>
-        <th>Total Stock</th>
-        <th>Reserved Stock</th>
-        <th>Available Stock</th>
-        <th>Amount to transfer</th>
-    </tr>
-            <c:set var="availableStock" value="${warehouseStockInfo.availableStock}"/>
-            <c:set var="reservedStock" value="${warehouseStockInfo.reservedStock}"/>
-            <c:set var="totalStock" value="${warehouseStockInfo.totalStock}"/>
-            <c:forEach begin="0" end="${totalStock.size()-1}" var="i">
+            <table border="1">
                 <tr>
-                    <td>${totalStock[i].item.id}</td>
-                    <td>${totalStock[i].item.name}</td>
-                    <td>${totalStock[i].itemStock}</td>
-                    <td>${reservedStock[i].itemStock}</td>
-                    <td>${availableStock[i].itemStock}</td>
-                    <td><input name="${totalStock[i].item.id}" type="number" min="0"
-                               max="${availableStock[i].itemStock}"
-                               value="0"/>
-                    </td>
-                        <%--            <td><form:input path="transferContents" name = "${stock.item.id}" type="number" min = "0" max="${stock.itemStock}"/></td>--%>
-                        <%--            <td><form:hidden path="transferContents" value = "${stock.item.id}"/></td>--%>
+                    <th>Item ID</th>
+                    <th>Item Name</th>
+                    <th>Total Stock</th>
+                    <th>Reserved Stock</th>
+                    <th>Available Stock</th>
+                    <th>Amount to transfer</th>
                 </tr>
-            </c:forEach>
+                <c:set var="availableStock" value="${warehouseStockInfo.availableStock}"/>
+                <c:set var="reservedStock" value="${warehouseStockInfo.reservedStock}"/>
+                <c:set var="totalStock" value="${warehouseStockInfo.totalStock}"/>
+                <c:forEach begin="0" end="${totalStock.size()-1}" var="i">
+                    <c:if test="${totalStock[i].itemStock > 0}">
+                        <tr>
+                            <td>${totalStock[i].item.id}</td>
+                            <td>${totalStock[i].item.name}</td>
+                            <td>${totalStock[i].itemStock}</td>
+                            <td>${reservedStock[i].itemStock}</td>
+                            <td>${availableStock[i].itemStock}</td>
+                            <td><input name="${totalStock[i].item.id}" type="number" min="0"
+                                       max="${availableStock[i].itemStock}"
+                                       value="0"/>
+                            </td>
+                                <%--            <td><form:input path="transferContents" name = "${stock.item.id}" type="number" min = "0" max="${stock.itemStock}"/></td>--%>
+                                <%--            <td><form:hidden path="transferContents" value = "${stock.item.id}"/></td>--%>
+                        </tr>
+                    </c:if>
+                </c:forEach>
 
             </table>
             <input type="submit" value="submit"/>
