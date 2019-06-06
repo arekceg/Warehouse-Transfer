@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
 	private UserService userService;
-
-	@PostMapping("add")
-	public String addUser(@ModelAttribute("user") User user){
-		userService.saveUser(user);
-		return "redirect:/admin/";
-	}
+//
+//	@PostMapping("add")
+//	public String addUser(@ModelAttribute("user") User user){
+//		userService.saveUser(user);
+//		return "redirect:/admin/";
+//	}
 }

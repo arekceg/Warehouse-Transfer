@@ -67,7 +67,7 @@ public final class TransferController {
 		Long transferId = transferIdWrapper.getId();
 //		Warehouse destinationWarehouse = transferService.findTransferById(transferId).getDestinationWarehouse();
 		transferService.acceptTransfer(transferId);
-		return "redirect:/warehouse/1";
+		return "redirect:/warehouse/";
 	}
 
     // == WORKS ==
@@ -104,7 +104,7 @@ public final class TransferController {
 				populatedTransfer,
 				Transfer.class
 		);
-		return "redirect:/warehouse/1";
+		return "redirect:/warehouse/";
 	}
 
 }

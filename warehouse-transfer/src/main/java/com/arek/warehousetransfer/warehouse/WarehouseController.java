@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +29,7 @@ public class WarehouseController {
 	@GetMapping("")
 	public String showWarehouseDetails(Model model,
 	                                   @AuthenticationPrincipal CurrentUser customUser) {
-		Warehouse currentWarehouse= warehouseService.findWarehouseByManager(customUser.getUser());
+		Warehouse currentWarehouse= warehouseService.findWarehouseByManagerId(customUser.getUser().getId());
 		Long currentWarehouseId = currentWarehouse.getId();
 		model.addAttribute("currentWarehouseId", currentWarehouseId);
 		model.addAttribute("transferId", TransferIdWrapper.empty());
@@ -43,7 +42,7 @@ public class WarehouseController {
 	@GetMapping("history")
 	public String showWarehouseTransactionHistory(Model model,
 	                                              @AuthenticationPrincipal CurrentUser customUser) {
-		Warehouse currentWarehouse= warehouseService.findWarehouseByManager(customUser.getUser());
+		Warehouse currentWarehouse= warehouseService.findWarehouseByManagerId(customUser.getUser().getId());
 		Long currentWarehouseId = currentWarehouse.getId();
 		model.addAttribute("outgoingTransfersHistory", transferService.findAllTransfersBySourceWarehouseId(currentWarehouseId));
 		model.addAttribute("incomingTransfersHistory", transferService.findAllTransfersByDestinationWarehouseId(currentWarehouseId));
@@ -51,7 +50,11 @@ public class WarehouseController {
 	}
 
 	//REST
-
+	@GetMapping("user/{id}")
+	public Warehouse getWarehouseByMangerId(@PathVariable Long id){
+		return warehouseService.findWarehouseByManagerId(id);
+	}
+	//REST
 	@GetMapping("{id}")
 	public Warehouse getWarehouse(@PathVariable Long id){
 		return warehouseService.findWarehouseById(id);

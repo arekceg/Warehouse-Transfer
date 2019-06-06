@@ -18,6 +18,11 @@ public class UserController {
 
 	private UserService userService;
 
+	@GetMapping("{name}")
+	public User getUserByName(@PathVariable String name){
+		return userService.findByUserLogin(name);
+	}
+
 	@GetMapping("allnowarehouse")
 	public List<User> getUsersWithoutWarehouses(){
 		return userService.findUsersWithoutWarehouses();

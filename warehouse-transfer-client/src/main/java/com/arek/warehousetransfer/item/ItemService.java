@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -13,7 +14,7 @@ public class ItemService {
 
 
 	// == fields ==
-	private ItemRepository itemRepository;
+//	private ItemRepository itemRepository;
 
 	// == public methods ==
 	public List<Item> findAllItems() {
@@ -24,10 +25,17 @@ public class ItemService {
 	}
 
 	public Item findItemById(Long id) {
-		return itemRepository.findById(id).orElse(null);
-	}
-
-	public void saveItem(Item item) {
-		itemRepository.save(item);
+		final String uri = Mappings.BACKEND_ADRESS+"/item/"+id.toString();
+		RestTemplate restTemplate = new RestTemplate();
+		return restTemplate.getForObject(uri,Item.class);
 	}
 }
+//
+//	public Item findItemById(Long id) {
+//		return itemRepository.findById(id).orElse(null);
+//	}
+//
+//	public void saveItem(Item item) {
+//		itemRepository.save(item);
+//	}
+//}

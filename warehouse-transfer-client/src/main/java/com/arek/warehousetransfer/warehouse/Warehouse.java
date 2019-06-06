@@ -7,46 +7,45 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Entity
-@Table(name = "warehouses")
+//@Entity
+//@Table(name = "warehouses")
 @Getter
 @Setter
 @NoArgsConstructor
 public class Warehouse {
 	// == fields ==
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotBlank
 	private String name;
 
 	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
+//	@OneToOne(cascade = CascadeType.ALL)
 	private User manager;
 
-//	@NotNull
-	@OneToMany
-			(mappedBy = "warehouse")
+	//	@NotNull
+//	@OneToMany
+//			(mappedBy = "warehouse")
 	@JsonIgnore
 	private List<Stock> stocks;
 
-	@Transient
+	//	@Transient
 	@JsonIgnore
 	private String warehouseAndManager;
 
-	public String getWarehouseAndManager() {
-		return name + " : " + manager.getName();
+	public static Warehouse empty() {
+		return new Warehouse();
 	}
 
-	public static Warehouse empty(){
-		return new Warehouse();
+	public String getWarehouseAndManager() {
+		return name + " : " + manager.getName();
 	}
 
 

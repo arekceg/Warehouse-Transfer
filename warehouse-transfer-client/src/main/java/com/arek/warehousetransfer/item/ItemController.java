@@ -45,46 +45,46 @@ public class ItemController {
 		return response.getItemList();
 	}
 
-	@GetMapping("")
-//	@ResponseBody
-	public String getAllItems(Model model) {
-		model.addAttribute(AttributeNames.ITEMS, itemService.findAllItems());
-		model.addAttribute(AttributeNames.STOCKS, stockService.findAllStocks());
-		model.addAttribute(AttributeNames.ITEM, Item.emptyItem());
-		return Mappings.ITEM_LIST;
-	}
+//	@GetMapping("")
+////	@ResponseBody
+//	public String getAllItems(Model model) {
+//		model.addAttribute(AttributeNames.ITEMS, itemService.findAllItems());
+//		model.addAttribute(AttributeNames.STOCKS, stockService.findAllStocks());
+//		model.addAttribute(AttributeNames.ITEM, Item.emptyItem());
+//		return Mappings.ITEM_LIST;
+//	}
 
-	@GetMapping("edit/{id}")
-	public String editItem(Model model, @PathVariable Long id) {
-		model.addAttribute(AttributeNames.ITEM, itemService.findItemById(id));
-		return Mappings.ITEM_FORM;
-	}
+//	@GetMapping("edit/{id}")
+//	public String editItem(Model model, @PathVariable Long id) {
+//		model.addAttribute(AttributeNames.ITEM, itemService.findItemById(id));
+//		return Mappings.ITEM_FORM;
+//	}
+//
+//
+//
+//
+//	// == post mappings ==
+//	@PostMapping("")
+//	public String saveItem(Model model,
+//	                       @ModelAttribute @Valid Item item,
+//	                       BindingResult result) {
+//		if (result.hasErrors()) {
+//			model.addAttribute(AttributeNames.ITEMS, itemService.findAllItems());
+//			return Mappings.ITEM_LIST;
+//		}
+//		itemService.saveItem(item);
+//		return "redirect:/" + Mappings.ITEM + "/";
+//	}
 
 
 
-
-	// == post mappings ==
-	@PostMapping("")
-	public String saveItem(Model model,
-	                       @ModelAttribute @Valid Item item,
-	                       BindingResult result) {
-		if (result.hasErrors()) {
-			model.addAttribute(AttributeNames.ITEMS, itemService.findAllItems());
-			return Mappings.ITEM_LIST;
-		}
-		itemService.saveItem(item);
-		return "redirect:/" + Mappings.ITEM + "/";
-	}
-
-
-
-	@PostMapping("edit/{id}")
-	public String updateItem(@ModelAttribute @Valid Item item,
-	                         BindingResult result) {
-		if (result.hasErrors()) {
-			return Mappings.ITEM_FORM;
-		}
-		itemService.saveItem(item);
-		return "redirect:/" + Mappings.ITEM + "/";
-	}
+//	@PostMapping("edit/{id}")
+//	public String updateItem(@ModelAttribute @Valid Item item,
+//	                         BindingResult result) {
+//		if (result.hasErrors()) {
+//			return Mappings.ITEM_FORM;
+//		}
+//		itemService.saveItem(item);
+//		return "redirect:/" + Mappings.ITEM + "/";
+//	}
 }

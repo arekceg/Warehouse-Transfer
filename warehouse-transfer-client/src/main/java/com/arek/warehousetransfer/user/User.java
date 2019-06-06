@@ -2,46 +2,44 @@ package com.arek.warehousetransfer.user;
 
 import com.arek.warehousetransfer.user.Role.Role;
 import com.arek.warehousetransfer.warehouse.Warehouse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
-@Entity
+//@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "users")
+//@Table(name = "users")
 public class User {
 
 	// == fields ==
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String name;
 
 	@NotBlank
-	@Column(unique = true, nullable = false)
+//	@Column(unique = true, nullable = false)
 	private String username;
 
 	@NotBlank
-	@Column(nullable = false)
+//	@Column(nullable = false)
 	private String password;
 
 	private int enabled;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "role_id"))
+//	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
+//			inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 
 //	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
+//	@OneToOne(cascade = CascadeType.ALL)
 //	@JsonIgnore
 	private Warehouse warehouse;
 

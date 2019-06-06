@@ -15,8 +15,8 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //
-//	@Autowired
-//	DataSource dataSource;
+	@Autowired
+	DataSource dataSource;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {

@@ -2,11 +2,7 @@ package com.arek.warehousetransfer.transfer;
 
 import com.arek.warehousetransfer.item.Item;
 import com.arek.warehousetransfer.item.ItemService;
-import com.arek.warehousetransfer.stock.StockService;
-import com.arek.warehousetransfer.stock.StockType;
 import com.arek.warehousetransfer.utils.Mappings;
-import com.arek.warehousetransfer.warehouse.Warehouse;
-import com.arek.warehousetransfer.warehouse.WarehouseRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -17,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -28,10 +23,10 @@ import java.util.List;
 public class TransferService {
 
 	// == fields ==
-	private TransferRepository transferRepository;
+//	private TransferRepository transferRepository;
 	private ItemService itemService;
-	private WarehouseRepository warehouseRepository;
-	private StockService stockService;
+//	private WarehouseRepository warehouseRepository;
+//	private StockService stockService;
 
 	// == public methods ==
 
@@ -39,7 +34,7 @@ public class TransferService {
 //		transferRepository.delete(transfer);
 //	}
 	public List<Transfer> findAllTransfers() {
-				final String uri = Mappings.BACKEND_ADRESS + "/transfer/all";
+		final String uri = Mappings.BACKEND_ADRESS + "/transfer/all";
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<List<Transfer>> response = restTemplate.exchange(
 				uri,
@@ -103,9 +98,9 @@ public class TransferService {
 		return response.getBody();
 	}
 
-	public void saveTransfer(Transfer transfer) {
-		transferRepository.save(transfer);
-	}
+//	public void saveTransfer(Transfer transfer) {
+//		transferRepository.save(transfer);
+//	}
 
 	public Transfer populateTransferDataFromRequestBody(HttpServletRequest req, Transfer transfer) {
 		List<TransferContent> transferContents = new ArrayList<>();
@@ -127,9 +122,9 @@ public class TransferService {
 		return transfer;
 	}
 
-	public void setTransferToAccepted(Long id) {
-		transferRepository.setTransferToAccepted(id, LocalDate.now());
-	}
+//	public void setTransferToAccepted(Long id) {
+//		transferRepository.setTransferToAccepted(id, LocalDate.now());
+//	}
 
 	public Transfer findTransferById(Long id) {
 		final String uri = Mappings.BACKEND_ADRESS + "/transfer/" + id.toString();
@@ -149,7 +144,7 @@ public class TransferService {
 	public void acceptTransfer(Long id) {
 		final String uri = Mappings.BACKEND_ADRESS + "/transfer/" + id + "/accept";
 		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.put(uri,Transfer.class);
+		restTemplate.put(uri, Transfer.class);
 	}
 //		3.    Add that reserved stock to destination warehouse as available stock
 //		          * find corresponding stock in destination warehouse and increase it's available stock

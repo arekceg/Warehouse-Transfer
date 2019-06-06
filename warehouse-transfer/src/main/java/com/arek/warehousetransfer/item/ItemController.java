@@ -8,6 +8,7 @@ import com.arek.warehousetransfer.utils.Mappings;
 import com.arek.warehousetransfer.warehouse.Warehouse;
 import com.arek.warehousetransfer.warehouse.WarehouseService;
 import lombok.AllArgsConstructor;
+import org.hibernate.annotations.GeneratorType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -50,10 +51,17 @@ public class ItemController {
 		return Mappings.ITEM_LIST;
 	}
 
+	//REST
 	@GetMapping("edit/{id}")
 	public String editItem(Model model, @PathVariable Long id) {
 		model.addAttribute(AttributeNames.ITEM, itemService.findItemById(id));
 		return Mappings.ITEM_FORM;
+	}
+
+	//REST
+	@GetMapping("{id}")
+	public Item getItemById(@PathVariable Long id){
+		return itemService.findItemById(id);
 	}
 
 

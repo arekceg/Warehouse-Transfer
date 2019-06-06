@@ -33,8 +33,8 @@ public class WarehouseService {
 		return warehouseRepository.findById(id).orElse(null);
 	}
 
-	public Warehouse findWarehouseByManager(User manager){
-		return warehouseRepository.findWarehouseByManagerId(manager.getId());
+	public Warehouse findWarehouseByManagerId(Long id){
+		return warehouseRepository.findWarehouseByManagerId(id);
 	}
 
 

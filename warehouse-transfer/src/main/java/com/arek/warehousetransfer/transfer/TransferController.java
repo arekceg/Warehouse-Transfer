@@ -43,7 +43,7 @@ public final class TransferController {
 	//REST UPDATED
 	@GetMapping("list/incoming/{id}/all")
 	public List<Transfer> showAllIncomingTransfers(@PathVariable Long id) {
-		return transferService.findAllUnacceptedTransfersByDestinationWarehouseId(id);
+		return transferService.findAllTransfersByDestinationWarehouseId(id);
 	}
 
 	//REST UPDATED

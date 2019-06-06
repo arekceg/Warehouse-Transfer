@@ -15,7 +15,7 @@
 <body>
 <form:form modelAttribute="stock" method="POST">
     <c:set value="${stock.item}" var="item"/>
-    Item name: <form:select path="item" items="${items}" itemLabel="name" itemValue="id"/>
+    Item name: <form:select path="item.id" items="${items}" itemLabel="name" itemValue="id"/>
     <br><br>
     Item amount: <form:input path="itemStock" type = "number"/>
     <br><br>

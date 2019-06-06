@@ -7,13 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
-@Entity
-@Table(name = "stocks")
+//@Entity
+//@Table(name = "stocks")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -21,28 +20,27 @@ public class Stock {
 
 	// == fields ==
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotNull
-	@OneToOne(cascade = CascadeType.PERSIST)
+//	@OneToOne(cascade = CascadeType.PERSIST)
 	private Item item;
 
 	@NotNull
 	@PositiveOrZero
-	@Column(nullable = false)
+//	@Column(nullable = false)
 	private int itemStock;
 
 	@NotNull
-	@ManyToOne
+//	@ManyToOne
 	@JsonIgnore
 	private Warehouse warehouse;
 
 	@NotNull
-	@Enumerated(EnumType.STRING)
+//	@Enumerated(EnumType.STRING)
 	private StockType stockType;
-
 
 
 	// == constructor ==
@@ -70,8 +68,8 @@ public class Stock {
 		return "Stock(item=" + this.getItem() + ", itemStock=" + this.getItemStock() + "\n";
 	}
 
-	@Enumerated(EnumType.STRING)
-	public StockType getStockType(){
+	//	@Enumerated(EnumType.STRING)
+	public StockType getStockType() {
 		return stockType;
 	}
 }

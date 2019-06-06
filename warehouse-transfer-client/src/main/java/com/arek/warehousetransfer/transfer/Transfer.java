@@ -1,34 +1,32 @@
 package com.arek.warehousetransfer.transfer;
 
 import com.arek.warehousetransfer.warehouse.Warehouse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
-@Table(name = "transfers")
+//@Entity
+//@Table(name = "transfers")
 @NoArgsConstructor
 @Setter
 @Getter
 public class Transfer {
 
 	// == fields ==
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotNull
-	@OneToOne
+//	@OneToOne
 	private Warehouse sourceWarehouse;
 
 	@NotNull
-	@OneToOne
+//	@OneToOne
 	private Warehouse destinationWarehouse;
 
 	@NotNull
@@ -42,8 +40,8 @@ public class Transfer {
 	private LocalDate challengedDate;
 	private LocalDate updatedDate;
 
-//	@NotNull
-	@OneToMany(cascade = CascadeType.ALL)
+	//	@NotNull
+//	@OneToMany(cascade = CascadeType.ALL)
 	private List<TransferContent> transferContents;
 
 
@@ -59,28 +57,28 @@ public class Transfer {
 		return new Transfer();
 	}
 
-	public static Transfer from(Warehouse warehouse){
+	public static Transfer from(Warehouse warehouse) {
 		Transfer transfer = new Transfer();
 		transfer.setSourceWarehouse(warehouse);
 		return transfer;
 	}
 
 	// == private methods ==
-	@PrePersist
+//	@PrePersist
 	private void prePersist() {
 		createdDate = LocalDate.now();
 	}
 
-	@PreUpdate
+	//	@PreUpdate
 	private void preUpdate() {
 		updatedDate = LocalDate.now();
 	}
 
-	public boolean isAccepted(){
+	public boolean isAccepted() {
 		return isAccepted;
 	}
 
-	public boolean isChallenged(){
+	public boolean isChallenged() {
 		return isChallenged;
 	}
 
