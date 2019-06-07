@@ -13,6 +13,7 @@
     <title>Home</title>
 </head>
 <body>
+<a href="/admin/"><b>ADMIN PANEL</b></a>
 <form action="/logout" method="POST">
     <input type="submit" value="LOGOUT"/>
 </form>
@@ -47,66 +48,82 @@
         </table>
     </c:otherwise>
 </c:choose>
-<br><br>
 <%--<form method="GET" action="/transfer/new/" class="inline">--%>
 <%--    <button type="submit" name="sourceWarehouseId" value="${warehouseStockInfo.warehouse.id}" class="link-button">--%>
 <%--        Add new transfer--%>
 <%--    </button>--%>
 <%--</form>--%>
+<hr>
+<h1>Transfer Management</h1>
 <a href="/transfer/new">Add new transfer</a>
 <br>
 <a href="/warehouse/history">Transfer History</a>
+<hr>
 <h3>Incoming transfers:</h3>
-<br>
-<table border="1">
-    <tr>
-        <th>Transfer ID</th>
-        <th>Date Created</th>
-        <th>Source Warehouse</th>
-        <th>Destination Warehouse</th>
-        <th>Is Accepted</th>
-        <th>Details</th>
-        <th>Accept</th>
-    </tr>
-    <form:form modelAttribute="transferId" method="POST" action="/transfer/accept/">
-        <c:forEach items="${incomingTransfers}" var="transfer">
+<c:choose>
+    <c:when test="${incomingTransfers.size() < 1}">
+        Warehouse has no incoming transfers
+    </c:when>
+    <c:otherwise>
+        <br>
+        <table border="1">
             <tr>
-                <td>${transfer.id}</td>
-                <td>${transfer.createdDate}</td>
-                <td>${transfer.sourceWarehouse.name}</td>
-                <td>${transfer.destinationWarehouse.name}</td>
-                <td>${transfer.isAccepted}</td>
-                <td><a href="/transfer/details/${transfer.id}">Details</a></td>
-                <td><form:hidden path="id" value="${transfer.id}"/><input type="submit" value="Accept"/></td>
+                <th>Transfer ID</th>
+                <th>Date Created</th>
+                <th>Source Warehouse</th>
+                <th>Destination Warehouse</th>
+                <th>Is Accepted</th>
+                <th>Details</th>
+                <th>Accept</th>
             </tr>
-        </c:forEach>
-    </form:form>
-</table>
+            <form:form modelAttribute="transferId" method="POST" action="/transfer/accept/">
+                <c:forEach items="${incomingTransfers}" var="transfer">
+                    <tr>
+                        <td>${transfer.id}</td>
+                        <td>${transfer.createdDate}</td>
+                        <td>${transfer.sourceWarehouse.name}</td>
+                        <td>${transfer.destinationWarehouse.name}</td>
+                        <td>${transfer.isAccepted}</td>
+                        <td><a href="/transfer/details/${transfer.id}">Details</a></td>
+                        <td><form:hidden path="id" value="${transfer.id}"/><input type="submit" value="Accept"/></td>
+                    </tr>
+                </c:forEach>
+            </form:form>
+        </table>
+    </c:otherwise>
+</c:choose>
 <hr>
 <h3>Outgoing transfers:</h3>
-<br>
-<table border="1">
-    <tr>
-        <th>Transfer ID</th>
-        <th>Date Created</th>
-        <th>Source Warehouse</th>
-        <th>Destination Warehouse</th>
-        <th>Is Accepted</th>
-        <th>Details</th>
-    </tr>
-    <c:forEach items="${outgoingTransfers}" var="transfer">
-        <tr>
-            <td>${transfer.id}</td>
-            <td>${transfer.createdDate}</td>
-            <td>${transfer.sourceWarehouse.name}</td>
-            <td>${transfer.destinationWarehouse.name}</td>
-            <td>${transfer.isAccepted}</td>
-            <td><a href="/transfer/details/${transfer.id}">Details</a></td>
-            <form:form modelAttribute="transferId" method="POST" action="/transfer/delete/">
-                <td><form:hidden path="id" value="${transfer.id}"/><input type="submit" value="Delete"/></td>
-            </form:form>
-        </tr>
-    </c:forEach>
-</table>
+<c:choose>
+    <c:when test="${outgoingTransfers.size() < 1}">
+        Warehouse has no outgoing transfers
+    </c:when>
+    <c:otherwise>
+        <br>
+        <table border="1">
+            <tr>
+                <th>Transfer ID</th>
+                <th>Date Created</th>
+                <th>Source Warehouse</th>
+                <th>Destination Warehouse</th>
+                <th>Is Accepted</th>
+                <th>Details</th>
+            </tr>
+            <c:forEach items="${outgoingTransfers}" var="transfer">
+                <tr>
+                    <td>${transfer.id}</td>
+                    <td>${transfer.createdDate}</td>
+                    <td>${transfer.sourceWarehouse.name}</td>
+                    <td>${transfer.destinationWarehouse.name}</td>
+                    <td>${transfer.isAccepted}</td>
+                    <td><a href="/transfer/details/${transfer.id}">Details</a></td>
+                    <form:form modelAttribute="transferId" method="POST" action="/transfer/delete/">
+                        <td><form:hidden path="id" value="${transfer.id}"/><input type="submit" value="Delete"/></td>
+                    </form:form>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:otherwise>
+</c:choose>
 </body>
 </html>
