@@ -1,4 +1,4 @@
-#Warehouse Transfer App
+# Warehouse Transfer App
 
 App for managing item transfer logistics between warehouses. App is split in two microservices:
   - one for communicating with the database and preparing data
@@ -10,7 +10,7 @@ Developed as a final project for Java Bootcamp.
 
 **Uses: Spring Boot, Hibernate, JPA, Spring Security, Docker**
 
-##**TO RUN**:
+## **TO RUN**:
  - mvn clean install in "warehouse-transer" and "warehouse-transfer-client" folders
  - docker build & docker run both apps
  - exposed ports: 
