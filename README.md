@@ -9,3 +9,10 @@ Both apps are designed to be run in separate Docker containters.
 Developed as a final project for Java Bootcamp. 
 
 Uses: Spring Boot, Hibernate, JPA, Spring Security, Docker
+
+TO RUN:
+ mvn clean install in "warehouse-transer" and "warehouse-transfer-client" folders
+ docker build & docker run both apps
+ exposed ports: 
+  backend: 8081
+  frontend: 8080
