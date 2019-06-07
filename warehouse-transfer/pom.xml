@@ -89,6 +89,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>wt-back</finalName>
 	</build>
 
 </project>

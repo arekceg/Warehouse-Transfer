@@ -17,7 +17,7 @@
     <br><br>
     Login: <form:input path="username"/>
     <br><br>
-    Password: <form:input path="password"/>
+    Password: <form:input path="password" type = "password"/>
     <br><br>
 <%--    Warehouse: <form:select path="warehouse.id" items="${warehouses}" itemValue="id" itemLabel="name"/>--%>
 <%--    <br><br>--%>

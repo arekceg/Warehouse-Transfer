@@ -89,6 +89,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>wt-client</finalName>
 	</build>
-
 </project>
