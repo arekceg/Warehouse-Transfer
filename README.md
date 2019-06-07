@@ -14,5 +14,5 @@ Developed as a final project for Java Bootcamp.
  - mvn clean install in "warehouse-transer" and "warehouse-transfer-client" folders
  - docker build & docker run both apps
  - exposed ports: 
-  - backend: 8081
-  - frontend: 8080
+    - backend: 8081
+    - frontend: 8080
