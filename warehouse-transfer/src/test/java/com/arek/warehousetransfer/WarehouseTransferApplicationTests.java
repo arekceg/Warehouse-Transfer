@@ -1,5 +1,6 @@
 package com.arek.warehousetransfer;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

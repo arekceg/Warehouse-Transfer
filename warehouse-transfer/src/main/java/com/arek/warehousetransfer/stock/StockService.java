@@ -28,6 +28,14 @@ public class StockService {
 
 	// == public methods ==
 
+	//DUMMY METHOD FOR JUNIT LEARNING
+	public Stock findStockByItemIdAndWarehouseId(Long id, Long warehouseId, StockType stockType){
+		Stock foundStock =  stockRepository.findStockByItemIdAndWarehouseIdAndStockType(id, warehouseId, stockType);
+		if(foundStock == null) throw new IllegalArgumentException();
+		return foundStock;
+	}
+	// ==================================
+
 	public List<Stock> calculateTotalStock(List<Stock> availableStockList, List<Stock> reservedStockList) {
 		List<Stock> totalStockList = new ArrayList<>();
 		for (int i = 0; i < availableStockList.size(); i++) {
