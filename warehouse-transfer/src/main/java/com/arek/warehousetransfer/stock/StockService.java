@@ -27,7 +27,6 @@ public class StockService {
 	private WarehouseService warehouseService;
 
 	// == public methods ==
-	// == general methods for working with stock ==
 
 	public List<Stock> calculateTotalStock(List<Stock> availableStockList, List<Stock> reservedStockList) {
 		List<Stock> totalStockList = new ArrayList<>();
@@ -41,49 +40,13 @@ public class StockService {
 		return totalStockList;
 	}
 
-	public void saveStock(Stock stock) {
-		List<Stock> stockListOfWarehouse = stock.getWarehouse().getStocks();
-		stockRepository.save(stock);
-	}
-
-
 	public List<Stock> findAllStocks() {
 		return stockRepository.findAll();
 	}
 
-	public int sumItemStockByItemIdAndWarehouseId(Long itemId, Long warehouseId, StockType stockType) {
-		return stockRepository.sumItemStockByItemIdAndWarehouseId(itemId, warehouseId, stockType);
-	}
-
-
-//	public Stock findStockByItemIdAndWarehouseId(Long itemId, Long warehouseId, StockType stockType) {
-//		return stockRepository.findStockByItemIdAndWarehouseIdAndStockType(itemId, warehouseId, stockType);
-//	}
-
 	public List<Stock> findStockByWarehouseId(Long id, StockType stockType) {
 		return stockRepository.findByWarehouseIdAndStockType(id, stockType);
 	}
-
-//	public Map<Item, Integer> getStockMapFromWarehouse(Long id) {
-//		return findStockByWarehouseId(id, StockType.AVAILABLE).stream()
-//				.collect(Collectors.toMap(Stock::getItem, Stock::getItemStock));
-//	}
-//
-//	public Map<Warehouse, Integer> getItemStockMapByItemId(Long id) {
-//		return stockRepository.findByItemId(id).stream()
-//				.collect(Collectors.toMap(Stock::getWarehouse, Stock::getItemStock));
-//	}
-//
-//	public Map<Item, Map<Warehouse, Integer>> getFullStockListByItem() {
-//		itemService.findAllItems();
-//		List<Item> allItems = itemService.findAllItems();
-//		return allItems.stream()
-//				.collect(Collectors.toMap(i -> i, i -> getItemStockMapByItemId(i.getId())));
-//0
-//	}
-
-	// == methods for working with reserved and available stock ==
-
 
 	public void updateReservedStockFromTransferData(Transfer transfer) {
 		transfer.getTransferContents().forEach(t -> {
@@ -93,7 +56,6 @@ public class StockService {
 	}
 
 	public void updateStockInWarehouse(int amount, Item item, Warehouse warehouse, StockType stockType, boolean creatingTransfer) {
-//		Stock stock = Stock.of(item,amount,warehouse,stockType);
 		if (stockRepository.findStockByItemIdAndWarehouseIdAndStockType(item.getId(), warehouse.getId(), stockType) != null) {
 			stockRepository.changeStockOfItemInWarehouse(amount, item.getId(), warehouse.getId(), stockType.toString());
 		} else {
@@ -140,10 +102,6 @@ public class StockService {
 				.filter(stock -> stock.getItem().getId().equals(id))
 				.findFirst().orElse(null);
 	}
-
-//	public List<Stock> getTotal(Long itemId, Long warehouseId){
-//		return stockRepository.getTotalStockByItemIdAndWarehouseId();
-//	}
 
 	public WarehouseStockInformation getWarehouseStockInformationByWarehouse(Warehouse warehouse) {
 		List<Stock> availableStock = getFullStockListByWarehouseIdAndStockType(warehouse.getId(), StockType.AVAILABLE);
