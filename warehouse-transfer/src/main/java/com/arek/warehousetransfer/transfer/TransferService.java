@@ -2,6 +2,7 @@ package com.arek.warehousetransfer.transfer;
 
 import com.arek.warehousetransfer.item.Item;
 import com.arek.warehousetransfer.item.ItemService;
+import com.arek.warehousetransfer.stock.Stock;
 import com.arek.warehousetransfer.stock.StockService;
 import com.arek.warehousetransfer.stock.StockType;
 import com.arek.warehousetransfer.warehouse.Warehouse;
@@ -30,7 +31,7 @@ public class TransferService {
 
 	// == public methods ==
 
-//	public void deleteTransfer(Transfer transfer){
+	//	public void deleteTransfer(Transfer transfer){
 //		transferRepository.delete(transfer);
 //	}
 	public List<Transfer> findAllTransfers() {
@@ -44,6 +45,7 @@ public class TransferService {
 	public List<Transfer> findAllUnacceptedTransfersBySourceWarehouseId(Long id) {
 		return transferRepository.findTransfersBySourceWarehouseIdAndIsAccepted(id, false);
 	}
+
 	public List<Transfer> findAllTransfersByDestinationWarehouseId(Long id) {
 		return transferRepository.findTransfersByDestinationWarehouseId(id);
 	}
@@ -84,17 +86,18 @@ public class TransferService {
 		return transferRepository.findById(id).orElse(null);
 	}
 
-	public void deleteTransfer(Long id){
+	public void deleteTransfer(Long id) {
 		Transfer transfer = findTransferById(id);
 		Warehouse sourceWarehouse = transfer.getSourceWarehouse();
-		Warehouse destinationWarehouse = transfer.getDestinationWarehouse();
 		List<TransferContent> transferContents = transfer.getTransferContents();
 		transferContents.forEach(tc -> {
 			Item transferItem = tc.getItem();
 			int itemAmount = tc.getAmount();
 			//2.    Remove reserved stock from source warehouse
-			stockService.updateStockInWarehouse(-itemAmount, transferItem, sourceWarehouse, StockType.RESERVED, false);
-			stockService.updateStockInWarehouse(itemAmount, transferItem, sourceWarehouse, StockType.AVAILABLE, false);
+			Stock reservedStockToRemove = Stock.of(transferItem, -itemAmount, sourceWarehouse, StockType.RESERVED);
+			stockService.updateStockInWarehouse(reservedStockToRemove, false);
+			Stock availableStockToFree = Stock.of(transferItem, itemAmount, sourceWarehouse, StockType.AVAILABLE);
+			stockService.updateStockInWarehouse(availableStockToFree, false);
 		});
 		transferRepository.delete(transfer);
 	}
@@ -110,8 +113,10 @@ public class TransferService {
 				Item transferItem = tc.getItem();
 				int itemAmount = tc.getAmount();
 				//2.    Remove reserved stock from source warehouse
-				stockService.updateStockInWarehouse(-itemAmount, transferItem, sourceWarehouse, StockType.RESERVED, false);
-				stockService.updateStockInWarehouse(itemAmount, transferItem, destinationWarehouse, StockType.AVAILABLE, false);
+				Stock reservedStockToRemove = Stock.of(transferItem, -itemAmount, sourceWarehouse, StockType.RESERVED);
+				stockService.updateStockInWarehouse(reservedStockToRemove, false);
+				Stock availableStockToAddToDestinationWarehouse = Stock.of(transferItem, itemAmount, destinationWarehouse, StockType.AVAILABLE);
+				stockService.updateStockInWarehouse(availableStockToAddToDestinationWarehouse, false);
 			});
 			log.info("==================================");
 			log.info("Transfer accepted  {}", transfer.getId());

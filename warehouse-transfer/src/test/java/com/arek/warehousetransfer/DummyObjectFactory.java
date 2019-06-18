@@ -1,21 +1,20 @@
-package com.arek.warehousetransfer.warehouse;
+package com.arek.warehousetransfer;
 
 import com.arek.warehousetransfer.item.Item;
 import com.arek.warehousetransfer.stock.Stock;
 import com.arek.warehousetransfer.stock.StockType;
+import com.arek.warehousetransfer.transfer.Transfer;
 import com.arek.warehousetransfer.user.Role.Role;
 import com.arek.warehousetransfer.user.User;
+import com.arek.warehousetransfer.warehouse.Warehouse;
 import com.google.common.collect.Lists;
 
+import java.beans.Transient;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class DummyObjectFactory {
-	private Item item;
-	private Stock stock;
-	private User user;
-	private Warehouse warehouse;
 
 	public static Item dummyItem() {
 		Item dummyItem = Item.named("dummyItem");
@@ -103,6 +102,10 @@ public class DummyObjectFactory {
 		dummyUser.setEnabled(enabled);
 		dummyUser.setWarehouse(warehouse);
 		return dummyUser;
+	}
+
+	public static Transfer dummyTransfer(){
+		return Transfer.emptyTransfer();
 	}
 
 

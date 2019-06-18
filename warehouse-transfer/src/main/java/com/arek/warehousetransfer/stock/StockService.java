@@ -29,13 +29,14 @@ public class StockService {
 	// == public methods ==
 
 	//DUMMY METHOD FOR JUNIT LEARNING
-	public Stock findStockByItemIdAndWarehouseId(Long id, Long warehouseId, StockType stockType){
-		Stock foundStock =  stockRepository.findStockByItemIdAndWarehouseIdAndStockType(id, warehouseId, stockType);
-		if(foundStock == null) throw new IllegalArgumentException();
+	public Stock findStockByItemIdAndWarehouseId(Long id, Long warehouseId, StockType stockType) {
+		Stock foundStock = stockRepository.findStockByItemIdAndWarehouseIdAndStockType(id, warehouseId, stockType);
+		if (foundStock == null) throw new IllegalArgumentException();
 		return foundStock;
 	}
 	// ==================================
 
+	//TEST DONE
 	public List<Stock> calculateTotalStock(List<Stock> availableStockList, List<Stock> reservedStockList) {
 		List<Stock> totalStockList = new ArrayList<>();
 		for (int i = 0; i < availableStockList.size(); i++) {
@@ -56,18 +57,27 @@ public class StockService {
 		return stockRepository.findByWarehouseIdAndStockType(id, stockType);
 	}
 
+	//TEST WRITTEN
 	public void updateReservedStockFromTransferData(Transfer transfer) {
 		transfer.getTransferContents().forEach(t -> {
-			updateStockInWarehouse(t.getAmount(), t.getItem(), transfer.getSourceWarehouse(), StockType.RESERVED, true);
+			Stock tempStock = Stock.of(t.getItem(), t.getAmount(), transfer.getSourceWarehouse(), StockType.RESERVED);
+			updateStockInWarehouse(tempStock, true);
 		});
 
 	}
 
-	public void updateStockInWarehouse(int amount, Item item, Warehouse warehouse, StockType stockType, boolean creatingTransfer) {
+    //TEST WRITTEN
+	public void updateStockInWarehouse(Stock stock, boolean creatingTransfer) {
+		int amount = stock.getItemStock();
+		Item item = stock.getItem();
+		Warehouse warehouse = stock.getWarehouse();
+		StockType stockType = stock.getStockType();
 		if (stockRepository.findStockByItemIdAndWarehouseIdAndStockType(item.getId(), warehouse.getId(), stockType) != null) {
 			stockRepository.changeStockOfItemInWarehouse(amount, item.getId(), warehouse.getId(), stockType.toString());
 		} else {
-			Stock stockToSave = Stock.of(item, amount, warehouseService.findWarehouseById(warehouse.getId()), stockType);
+			Stock stockToSave = Stock.of(item, amount,
+					warehouseService.findWarehouseById(warehouse.getId()),
+					stockType);
 			itemService.saveItem(item);
 			stockRepository.save(stockToSave);
 		}
@@ -77,13 +87,14 @@ public class StockService {
 	}
 
 
-
+	//TEST WRITTEN
 	public List<Long> listUniqueItemsIdInWarehouse(Long warehouseId) {
 		return Lists.newArrayList(stockRepository.findItemsIdsByWarehouseId(warehouseId).stream()
 				.sorted()
 				.collect(Collectors.toList()));
 	}
 
+	//TEST WRITTEN
 	// returns a list of stock where every item in warehouse is included
 	// even if it's available or reserved stock is 0
 	public List<Stock> getFullStockListByWarehouseIdAndStockType(Long warehouseId, StockType stockType) {
@@ -105,7 +116,8 @@ public class StockService {
 		return resultList;
 	}
 
-	private Stock findStockFromListByItemId(List<Stock> stockList, Long id) {
+	//TEST WRITTEN
+	Stock findStockFromListByItemId(List<Stock> stockList, Long id) {
 		return stockList.stream()
 				.filter(stock -> stock.getItem().getId().equals(id))
 				.findFirst().orElse(null);
@@ -116,6 +128,5 @@ public class StockService {
 		List<Stock> reservedStock = getFullStockListByWarehouseIdAndStockType(warehouse.getId(), StockType.RESERVED);
 		List<Stock> totalStock = calculateTotalStock(availableStock, reservedStock);
 		return WarehouseStockInformation.of(warehouse, availableStock, reservedStock, totalStock);
-
 	}
 }

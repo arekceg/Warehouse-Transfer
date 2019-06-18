@@ -1,5 +1,6 @@
 package com.arek.warehousetransfer.warehouse;
 
+import com.arek.warehousetransfer.DummyObjectFactory;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
