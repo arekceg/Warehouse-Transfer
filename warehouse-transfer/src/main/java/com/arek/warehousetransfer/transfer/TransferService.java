@@ -58,26 +58,6 @@ public class TransferService {
 		transferRepository.save(transfer);
 	}
 
-	public Transfer populateTransferDataFromRequestBody(HttpServletRequest req, Transfer transfer) {
-		List<TransferContent> transferContents = new ArrayList<>();
-		Enumeration<String> paramNames = req.getParameterNames();
-
-		while (paramNames.hasMoreElements()) {
-			String paramName = paramNames.nextElement();
-			if (NumberUtils.isParsable(paramName)) {
-				Item itemToAdd = itemService.findItemById(NumberUtils.toLong(paramName));
-				int itemAmount = NumberUtils.toInt(req.getParameter(paramName));
-				if (itemAmount > 0) {
-					TransferContent transferContent = TransferContent.of(itemToAdd, itemAmount, transfer);
-					transferContents.add(transferContent);
-				}
-			}
-		}
-
-		transfer.setTransferContents(transferContents);
-		return transfer;
-	}
-
 	public void setTransferToAccepted(Long id) {
 		transferRepository.setTransferToAccepted(id, LocalDate.now());
 	}
@@ -89,6 +69,7 @@ public class TransferService {
 	public void deleteTransfer(Long id) {
 		Transfer transfer = findTransferById(id);
 		Warehouse sourceWarehouse = transfer.getSourceWarehouse();
+		//1.    Get transfer content
 		List<TransferContent> transferContents = transfer.getTransferContents();
 		transferContents.forEach(tc -> {
 			Item transferItem = tc.getItem();

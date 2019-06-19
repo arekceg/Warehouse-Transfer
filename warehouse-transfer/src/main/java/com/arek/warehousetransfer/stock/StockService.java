@@ -123,6 +123,7 @@ public class StockService {
 				.findFirst().orElse(null);
 	}
 
+	//TEST NOT REQUIRED, ALL METHODS INSIDE TESTED
 	public WarehouseStockInformation getWarehouseStockInformationByWarehouse(Warehouse warehouse) {
 		List<Stock> availableStock = getFullStockListByWarehouseIdAndStockType(warehouse.getId(), StockType.AVAILABLE);
 		List<Stock> reservedStock = getFullStockListByWarehouseIdAndStockType(warehouse.getId(), StockType.RESERVED);

@@ -31,21 +31,7 @@ public class WarehouseControllerTest {
 
 	@Test
 	public void getWarehouseByIdTest() {
-		//given
-		dummyWarehouse = DummyObjectFactory.dummyWarehouse();
 
-		//when
-		when(warehouseService.findWarehouseById(anyLong()))
-				.thenReturn(dummyWarehouse);
-
-		//then
-		Warehouse foundWarehouse = warehouseController.getWarehouse(1L);
-		assertNotNull(foundWarehouse);
-		assertThat(foundWarehouse.getId(), is(equalTo(1L)));
-		assertThat(foundWarehouse.getName(), allOf(
-				notNullValue(),
-				is(equalTo(dummyWarehouse.getName()))
-		));
 	}
 
 	@Test

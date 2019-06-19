@@ -21,19 +21,6 @@ public class StockController {
 	private WarehouseService warehouseService;
 	private ItemService itemService;
 
-//	@GetMapping("add/{choice}")
-//	public String addNewItemToStock(Model model,
-//	                                @PathVariable String choice) {
-//		Stock emptyStock = Stock.emptyStock();
-//		emptyStock.setItem(Item.emptyItem());
-//		model.addAttribute(AttributeNames.STOCK, emptyStock);
-//		model.addAttribute("items", itemService.findAllItems());
-//		model.addAttribute("warehouses", warehouseService.findAllWarehouses());
-//		if (choice.equalsIgnoreCase("new")) return Mappings.STOCK_FORM;
-//		else if (choice.equalsIgnoreCase("existing")) return "stock/existing-item-stock-form";
-//		return "redirect:/admin/";
-//	}
-
 	//REST
 	@PutMapping("add")
 	public ResponseEntity<Stock> saveNewStock(@RequestBody StockAndWarehouseWrapper wrapper) {

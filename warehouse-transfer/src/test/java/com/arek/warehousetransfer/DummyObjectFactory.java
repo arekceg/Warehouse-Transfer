@@ -4,12 +4,12 @@ import com.arek.warehousetransfer.item.Item;
 import com.arek.warehousetransfer.stock.Stock;
 import com.arek.warehousetransfer.stock.StockType;
 import com.arek.warehousetransfer.transfer.Transfer;
+import com.arek.warehousetransfer.transfer.TransferContent;
 import com.arek.warehousetransfer.user.Role.Role;
 import com.arek.warehousetransfer.user.User;
 import com.arek.warehousetransfer.warehouse.Warehouse;
 import com.google.common.collect.Lists;
 
-import java.beans.Transient;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -106,6 +106,18 @@ public class DummyObjectFactory {
 
 	public static Transfer dummyTransfer(){
 		return Transfer.emptyTransfer();
+	}
+
+	public static List<TransferContent> dummyTransferContentList(){
+		//List will contain only two elements for quicker testing
+		List<TransferContent> dummyTransferContentList = Lists.newArrayList();
+		for (int i = 1; i <= 2; i++) {
+			Item tempDummyItem = DummyObjectFactory.dummyItem(
+					Integer.toUnsignedLong(i), "dummyItem" + i);
+			dummyTransferContentList.add(TransferContent.of(tempDummyItem, i, dummyTransfer()));
+		}
+
+		return dummyTransferContentList;
 	}
 
 

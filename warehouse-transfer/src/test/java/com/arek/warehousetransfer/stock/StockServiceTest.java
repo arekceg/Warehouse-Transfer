@@ -20,10 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -207,8 +204,8 @@ public class StockServiceTest {
 
 	@Test
 	public void getFullStockListByWarehouseIdAndStockTypeTest_testingOnDummyAvailableStockList() {
-		//dummy stock list defined at the top
 		//given
+		//dummy stock list defined at the top
 		List<Long> dummyIdList = Arrays.asList(1L, 5L, 10L, 2L, 3L, 4L, 12L);
 		Set<Long> dummyItemIdSet = Sets.newHashSet(dummyIdList);
 		//expected dummy total Stock list should look like this:
@@ -258,9 +255,10 @@ public class StockServiceTest {
 		//then
 		assertThat(totalStockList.size(), is(equalTo(dummyTotalStockList.size())));
 		for (int i = 0; i < totalStockList.size(); i++) {
-			assertEquals(totalStockList.get(i).getItem().getId(),
-					dummyTotalStockList.get(i).getItem().getId());
-			assertThat(totalStockList.get(i).getItemStock(), is(equalTo(
+			assertEquals(totalStockList.get(i).getItem(),
+					dummyTotalStockList.get(i).getItem());
+			assertThat(totalStockList.get(i).getItemStock(),
+					is(equalTo(
 					dummyTotalStockList.get(i).getItemStock()
 			)));
 		}
@@ -288,8 +286,8 @@ public class StockServiceTest {
 		//when
 		Stock foundStock = stockService.findStockFromListByItemId(dummyAvailableStockList, itemId);
 
-		//then
 		assertNull(foundStock);
+		//then
 	}
 
 	@Test
@@ -298,13 +296,7 @@ public class StockServiceTest {
 		Stock dummyStock = DummyObjectFactory.dummyStock(StockType.RESERVED);
 		Transfer dummyTransfer = DummyObjectFactory.dummyTransfer();
 		dummyTransfer.setSourceWarehouse(dummyWarehouse);
-
-		List<TransferContent> dummyTransferContentList = Lists.newArrayList();
-		for (int i = 1; i <= 2; i++) {
-			Item tempDummyItem = DummyObjectFactory.dummyItem(
-					Integer.toUnsignedLong(i), "dummyItem" + i);
-			dummyTransferContentList.add(TransferContent.of(tempDummyItem, i, dummyTransfer));
-		}
+		List<TransferContent> dummyTransferContentList = DummyObjectFactory.dummyTransferContentList();
 
 		dummyTransfer.setTransferContents(dummyTransferContentList);
 
