@@ -2,7 +2,7 @@
 
 App for managing item transfer logistics between warehouses. App consits of two elements:
   - REST API 
-  - Client application with frontend accesibility
+  - Client application with simple frontend functionality
  
 Both apps are designed to be run in separate Docker containters. Main database is hosted on Google Cloud Services. App version on github uses local databases.
 
