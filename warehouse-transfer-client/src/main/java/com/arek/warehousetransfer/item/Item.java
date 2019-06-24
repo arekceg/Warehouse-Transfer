@@ -6,16 +6,12 @@ import org.springframework.context.annotation.Bean;
 
 import javax.validation.constraints.NotBlank;
 
-//@Entity
-//@Table(name = "items")
 @Data
 @NoArgsConstructor
 public final class Item {
 	@NotBlank
 	private String name;
 	// == fields ==
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private Item(@NotBlank String name) {

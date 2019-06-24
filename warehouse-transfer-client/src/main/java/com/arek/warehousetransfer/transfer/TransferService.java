@@ -23,16 +23,10 @@ import java.util.List;
 public class TransferService {
 
 	// == fields ==
-//	private TransferRepository transferRepository;
 	private ItemService itemService;
-//	private WarehouseRepository warehouseRepository;
-//	private StockService stockService;
 
 	// == public methods ==
 
-	//	public void deleteTransfer(Transfer transfer){
-//		transferRepository.delete(transfer);
-//	}
 	public List<Transfer> findAllTransfers() {
 		final String uri = Mappings.BACKEND_ADRESS + "/transfer/all";
 		RestTemplate restTemplate = new RestTemplate();
@@ -98,10 +92,6 @@ public class TransferService {
 		return response.getBody();
 	}
 
-//	public void saveTransfer(Transfer transfer) {
-//		transferRepository.save(transfer);
-//	}
-
 	public Transfer populateTransferDataFromRequestBody(HttpServletRequest req, Transfer transfer) {
 		List<TransferContent> transferContents = new ArrayList<>();
 		Enumeration<String> paramNames = req.getParameterNames();
@@ -121,10 +111,6 @@ public class TransferService {
 		transfer.setTransferContents(transferContents);
 		return transfer;
 	}
-
-//	public void setTransferToAccepted(Long id) {
-//		transferRepository.setTransferToAccepted(id, LocalDate.now());
-//	}
 
 	public Transfer findTransferById(Long id) {
 		final String uri = Mappings.BACKEND_ADRESS + "/transfer/" + id.toString();

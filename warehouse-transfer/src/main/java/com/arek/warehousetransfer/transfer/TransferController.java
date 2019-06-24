@@ -58,40 +58,14 @@ public final class TransferController {
 		return transferService.findAllTransfers();
 	}
 
-	//	@GetMapping("list/all/{id}")
-//	public String showAllTransfers(Model model,
-//	                               @PathVariable Long id) {
-//		Warehouse sourceWarehouse = warehouseService.findWarehouseById(id);
-//		model.addAttribute("warehouseStockInfo", stockService.getWarehouseStockInformationByWarehouse(sourceWarehouse));
-//		model.addAttribute("outgoingTransfersHistory", transferService.findAllTransfersBySourceWarehouseId(id));
-//		model.addAttribute("incomingTransfersHistory", transferService.findAllUnacceptedTransfersByDestinationWarehouseId(id));
-//		return "transfer/transfer-all";
-//	}
-//
-//	@GetMapping("new")
-//	public String createNewTransferForm(Model model,
-//	                                    @SessionAttribute("currentWarehouseId") String id) {
-//		Warehouse sourceWarehouse = warehouseService.findWarehouseById(NumberUtils.toLong(id));
-//		model.addAttribute("warehouseStockInfo", stockService.getWarehouseStockInformationByWarehouse(sourceWarehouse));
-//		model.addAttribute("sourceWarehouse", sourceWarehouse);
-//		model.addAttribute("warehouses", warehouseService.findWarehousesWithIdNotEqual(sourceWarehouse.getId()));
-//		model.addAttribute("transfer", Transfer.emptyTransfer());
-//		return Mappings.TRANSFER_FORM;
-//	}
-//
-//	@GetMapping("details/{id}")
-//	public String getTransferDetails(@PathVariable Long id,
-//	                                 Model model) {
-//		model.addAttribute("transfer", transferService.findTransferById(id));
-//		return Mappings.TRANSFER_DETAILS;
-//	}
+	//REST
 	@PostMapping("accept")
 	public String acceptTransfer(@ModelAttribute("transferId") TransferIdWrapper transferIdWrapper) {
 		Long transferId = transferIdWrapper.getId();
-		Warehouse destinationWarehouse = transferService.findTransferById(transferId).getDestinationWarehouse();
 		return "redirect:/warehouse/";
 	}
 
+	//REST
 	@PostMapping("delete")
 	public String deleteTransfer(@ModelAttribute("transferId") TransferIdWrapper transferIdWrapper,
 	                             HttpServletRequest request) {
@@ -100,11 +74,6 @@ public final class TransferController {
 		return "redirect:" + referer;
 	}
 
-
-//	@GetMapping("test")
-//	@ResponseBody
-//	public String test(){
-//	}
 
 	// REST UPDATED
 	@PostMapping("new")

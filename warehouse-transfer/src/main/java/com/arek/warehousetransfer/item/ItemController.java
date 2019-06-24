@@ -43,7 +43,6 @@ public class ItemController {
 
 
 	@GetMapping("")
-//	@ResponseBody
 	public String getAllItems(Model model) {
 		model.addAttribute(AttributeNames.ITEMS, itemService.findAllItems());
 		model.addAttribute(AttributeNames.STOCKS, stockService.findAllStocks());

@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("warehouse")
@@ -17,55 +19,34 @@ public class WarehouseController {
 
 	private WarehouseService warehouseService;
 	private StockService stockService;
-	private TransferService transferService;
 	private UserService userService;
-
-//	@GetMapping("")
-//	public String showWarehouseDetails(Model model,
-//	                                   @AuthenticationPrincipal CurrentUser customUser) {
-//		Warehouse currentWarehouse= warehouseService.findWarehouseByManagerId(customUser.getUser().getId());
-//		Long currentWarehouseId = currentWarehouse.getId();
-//		model.addAttribute("currentWarehouseId", currentWarehouseId);
-//		model.addAttribute("transferId", TransferIdWrapper.empty());
-//		model.addAttribute("warehouseStockInfo", stockService.getWarehouseStockInformationByWarehouse(currentWarehouse));
-//		model.addAttribute("outgoingTransfers", transferService.findAllUnacceptedTransfersBySourceWarehouseId(currentWarehouseId));
-//		model.addAttribute("incomingTransfers", transferService.findAllUnacceptedTransfersByDestinationWarehouseId(currentWarehouseId));
-//		return "warehouse/warehouse-home";
-//	}
-//
-//	@GetMapping("history")
-//	public String showWarehouseTransactionHistory(Model model,
-//	                                              @AuthenticationPrincipal CurrentUser customUser) {
-//		Warehouse currentWarehouse= warehouseService.findWarehouseByManagerId(customUser.getUser().getId());
-//		Long currentWarehouseId = currentWarehouse.getId();
-//		model.addAttribute("outgoingTransfersHistory", transferService.findAllTransfersBySourceWarehouseId(currentWarehouseId));
-//		model.addAttribute("incomingTransfersHistory", transferService.findAllTransfersByDestinationWarehouseId(currentWarehouseId));
-//		return "warehouse/warehouse-history";
-//	}
 
 	//REST
 	@GetMapping("user/{id}")
 	public Warehouse getWarehouseByMangerId(@PathVariable Long id) {
 		return warehouseService.findWarehouseByManagerId(id);
 	}
-
 	//REST
-	@GetMapping("{id}")
-	public Warehouse getWarehouse(@PathVariable Long id) {
-		return warehouseService.findWarehouseById(id);
+	@GetMapping(value = "{id}")
+	public ResponseEntity<Warehouse> getWarehouse(@PathVariable Long id) {
+		Warehouse foundWarehouse = warehouseService.findWarehouseById(id);
+		if(foundWarehouse!=null) {
+			return new ResponseEntity<>(foundWarehouse, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-
-//	//REST
-//	@GetMapping("all")
-//	public List<Warehouse> getAllWarehouses(){
-//		return warehouseService.findAllWarehouses();
-//	}
 
 	//REST
 	@GetMapping("stockinformation/{id}")
 	public WarehouseStockInformation getStockInformation(@PathVariable Long id) {
 		Warehouse warehouse = warehouseService.findWarehouseById(id);
 		return stockService.getWarehouseStockInformationByWarehouse(warehouse);
+	}
+
+	//	//REST
+	@GetMapping("all")
+	public List<Warehouse> getAllWarehouses(){
+		return warehouseService.findAllWarehouses();
 	}
 
 	//REST POST

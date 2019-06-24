@@ -31,9 +31,7 @@ public class Warehouse {
 
 	@NotNull
 	@OneToOne(cascade = CascadeType.MERGE)
-//	@JsonIgnore
 	private User manager;
-//	@NotNull
 	@OneToMany
 			(mappedBy = "warehouse")
 	private List<Stock> stocks;
@@ -50,19 +48,4 @@ public class Warehouse {
 		return new Warehouse();
 	}
 
-
-	//	@NotNull
-//	@OneToMany
-//	private List<Stock> availableStock;
-//
-//	@NotNull
-//	@OneToMany
-//	private List<Stock> reservedStock;
-//
-//	@NotNull
-//	@OneToMany
-//	private List<Stock> totalStock;
-
-//	@Transient
-//	private Map<Item,Integer> availableStockByItemMap
 }

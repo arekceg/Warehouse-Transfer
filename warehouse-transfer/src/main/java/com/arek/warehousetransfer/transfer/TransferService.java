@@ -31,9 +31,6 @@ public class TransferService {
 
 	// == public methods ==
 
-	//	public void deleteTransfer(Transfer transfer){
-//		transferRepository.delete(transfer);
-//	}
 	public List<Transfer> findAllTransfers() {
 		return transferRepository.findAll();
 	}

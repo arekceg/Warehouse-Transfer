@@ -37,14 +37,6 @@ public class TransferContent {
 		this.transfer = transfer;
 	}
 
-	//	public TransferContent(@NotNull Item item, @PositiveOrZero @NotNull int itemStock) {
-//		this.item = item;
-//		this.itemStock = itemStock;
-//	}
-
-//	public static TransferContent of(Item transferItem, int itemAmount){
-//		return new TransferContent(transferItem,itemAmount);
-//	}
 
 	public static TransferContent empty(){
 		return new TransferContent();

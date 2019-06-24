@@ -15,10 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
@@ -46,7 +43,7 @@ public class TransferServiceTest {
 
 		ArgumentCaptor<Stock> stockArgumentCaptor = ArgumentCaptor.forClass(Stock.class);
 		willDoNothing().given(stockService).updateStockInWarehouse(
-				stockArgumentCaptor.capture(),anyBoolean());
+				stockArgumentCaptor.capture(), anyBoolean());
 
 		willDoNothing().given(transferRepository).delete(
 				any(Transfer.class));
@@ -60,7 +57,7 @@ public class TransferServiceTest {
 		transferService.deleteTransfer(1L);
 
 		//then
-        //ensure expected number of method calls
+		//ensure expected number of method calls
 		then(stockService).should(atMost(4)).updateStockInWarehouse(
 				any(Stock.class),
 				anyBoolean());

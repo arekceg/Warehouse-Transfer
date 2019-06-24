@@ -28,15 +28,7 @@ public final class TransferController {
 	private final TransferService transferService;
 
 
-//	@GetMapping("list/all/{id}")
-//	public String showAllTransfers(Model model,
-//	                               @PathVariable Long id) {
-//		Warehouse sourceWarehouse = warehouseService.findWarehouseById(id);
-//		model.addAttribute("warehouseStockInfo", stockService.getWarehouseStockInformationByWarehouse(sourceWarehouse));
-//		model.addAttribute("outgoingTransfersHistory", transferService.findAllTransfersBySourceWarehouseId(id));
-//		model.addAttribute("incomingTransfersHistory", transferService.findAllUnacceptedTransfersByDestinationWarehouseId(id));
-//		return "transfer/transfer-all";
-//	}
+
 
     // == WORKS ==
 	@GetMapping("new")
@@ -65,7 +57,6 @@ public final class TransferController {
 	@PostMapping("accept")
 	public String acceptTransfer(@ModelAttribute("transferId") TransferIdWrapper transferIdWrapper) {
 		Long transferId = transferIdWrapper.getId();
-//		Warehouse destinationWarehouse = transferService.findTransferById(transferId).getDestinationWarehouse();
 		transferService.acceptTransfer(transferId);
 		return "redirect:/warehouse/";
 	}
@@ -78,12 +69,6 @@ public final class TransferController {
 		transferService.deleteTransfer(transferIdWrapper.getId());
 		return "redirect:" + referer;
 	}
-
-
-//	@GetMapping("test")
-//	@ResponseBody
-//	public String test(){
-//	}
 
 
     // == WORKS ==

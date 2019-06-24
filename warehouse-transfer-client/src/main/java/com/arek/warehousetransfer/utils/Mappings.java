@@ -10,7 +10,7 @@ public final class Mappings {
 	public static final String TRANSFER_LIST = "transfer/transfer-list";
 	public static final String TRANSFER = "transfer";
 	public static final String TRANSFER_DETAILS = "transfer/transfer-details";
-	public static final String BACKEND_ADRESS = "http://172.17.0.2:8081";
+	public static final String BACKEND_ADRESS = "http://localhost:8081";
 
 
 	private Mappings() {

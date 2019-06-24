@@ -40,7 +40,6 @@ public class User {
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 
-//	@NotNull
 	@OneToOne(cascade = CascadeType.MERGE)
 	@JsonIgnore
 	private Warehouse warehouse;

@@ -20,7 +20,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -44,10 +47,6 @@ public class StockServiceTest {
 	WarehouseService warehouseService;
 	@Mock
 	StockRepository stockRepository;
-	@Mock
-	WarehouseRepository warehouseRepository;
-	@Mock
-	ItemRepository itemRepository;
 	@Mock
 	ItemService itemService;
 
@@ -259,8 +258,8 @@ public class StockServiceTest {
 					dummyTotalStockList.get(i).getItem());
 			assertThat(totalStockList.get(i).getItemStock(),
 					is(equalTo(
-					dummyTotalStockList.get(i).getItemStock()
-			)));
+							dummyTotalStockList.get(i).getItemStock()
+					)));
 		}
 	}
 
@@ -310,8 +309,8 @@ public class StockServiceTest {
 				anyInt(),
 				anyLong(),
 				anyLong(),
-                anyString()
-				);
+				anyString()
+		);
 
 		given(warehouseService.findWarehouseById(anyLong())).willReturn(dummyWarehouse);
 

@@ -46,16 +46,8 @@ public class Transfer {
 	private LocalDate challengedDate;
 	private LocalDate updatedDate;
 
-//	@NotNull
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<TransferContent> transferContents;
-
-
-//	@OneToMany(mappedBy = "transfer")
-//	private List<TempTransferStock> tempTransferStocks;
-//
-//	@OneToMany
-//	private Map<item, Integer> transferContents;
 
 
 	// == static methods ==
@@ -80,7 +72,7 @@ public class Transfer {
 		updatedDate = LocalDate.now();
 	}
 
-	public boolean isAccepted(){
+	boolean isAccepted(){
 		return isAccepted;
 	}
 
@@ -95,4 +87,5 @@ public class Transfer {
 	public String getIsChallenged() {
 		return isChallenged ? "true" : "false";
 	}
+
 }

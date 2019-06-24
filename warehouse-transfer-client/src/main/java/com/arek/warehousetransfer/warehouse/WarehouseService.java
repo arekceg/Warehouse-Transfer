@@ -17,12 +17,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class WarehouseService {
 
-//	private WarehouseRepository warehouseRepository;
-
-//	public List<Warehouse> findAllWarehousesWithoutManagers() {
-//		return warehouseRepository.findWarehousesByManagerNull();
-//	}
-
 	public List<Warehouse> findAllWarehouses() {
 		final String url = Mappings.BACKEND_ADRESS + "/warehouse/all";
 		RestTemplate restTemplate = new RestTemplate();
@@ -42,15 +36,10 @@ public class WarehouseService {
 				.collect(Collectors.toList());
 	}
 
-//	public void saveWarehouse(Warehouse warehouse) {
-//		warehouseRepository.save(warehouse);
-//	}
-
 	public Warehouse findWarehouseById(Long id) {
 		final String uri = Mappings.BACKEND_ADRESS+"/warehouse/"+id.toString();
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.getForObject(uri,Warehouse.class);
-//		return warehouseRepository.findById(id).orElse(null);
 	}
 
 	public Warehouse findWarehouseByManager(User manager) {
@@ -58,8 +47,5 @@ public class WarehouseService {
 		final String uri = Mappings.BACKEND_ADRESS+"/warehouse/user/"+managerId.toString();
 		RestTemplate restTemplate = new RestTemplate();
 		return  restTemplate.getForObject(uri, Warehouse.class);
-//		return warehouseRepository.findWarehouseByManagerId(manager.getId());
 	}
-
-
 }

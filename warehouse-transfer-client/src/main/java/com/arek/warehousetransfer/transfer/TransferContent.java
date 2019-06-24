@@ -9,21 +9,16 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
-//@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 public class TransferContent {
-	//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	//	@ManyToOne(cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Transfer transfer;
 
 	@NotNull
-//	@OneToOne
 	private Item item;
 
 	@PositiveOrZero
@@ -35,15 +30,6 @@ public class TransferContent {
 		this.amount = amount;
 		this.transfer = transfer;
 	}
-
-	//	public TransferContent(@NotNull Item item, @PositiveOrZero @NotNull int itemStock) {
-//		this.item = item;
-//		this.itemStock = itemStock;
-//	}
-
-//	public static TransferContent of(Item transferItem, int itemAmount){
-//		return new TransferContent(transferItem,itemAmount);
-//	}
 
 	public static TransferContent empty() {
 		return new TransferContent();
