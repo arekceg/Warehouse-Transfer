@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.arek</groupId>
-	<artifactId>warehouse-transfer</artifactId>
+	<artifactId>warehouse-transfer-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>warehouse-transfer</name>
+	<name>warehouse-transfer-api</name>
 	<description>Final project for Java bootcamp</description>
 
 	<properties>
