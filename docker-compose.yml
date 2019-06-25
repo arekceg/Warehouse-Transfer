@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+
+  db:
+    image: mysql:latest
+    volumes:
+      - ./db-dump/:/docker-entrypoint-initdb.d/
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: warehouse-transfer
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root_password
+
+  wt-api:
+    build:
+     context: ./warehouse-transfer-api
+     dockerfile: Dockerfile
+    ports:
+      - 8081:8081
+    links:
+      - db:mysql

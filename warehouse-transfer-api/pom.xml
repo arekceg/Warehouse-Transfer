@@ -99,7 +99,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>wt-back</finalName>
+		<finalName>wt-api</finalName>
 	</build>
 
 </project>
