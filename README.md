@@ -8,7 +8,7 @@ Both apps are designed to be run in separate Docker containters. Main database i
 
 Developed as a final project for Java Bootcamp. 
 
-**Uses: Spring Boot, Hibernate, JPA, Spring Security, Docker, Google Cloud**
+**Uses: Spring Boot, Hibernate, JPA, Spring Security, Docker, jUnit, Mockito**
 
 # To run:
   - mvn clean install in client and api modules
