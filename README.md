@@ -11,8 +11,8 @@ Developed as a final project for Java Bootcamp.
 **Uses: Spring Boot, Hibernate, JPA, Spring Security, Docker, jUnit, Mockito**
 
 # To run:
-  - mvn clean install in client and api modules
-  - docker-compose up
+  -   *mvn clean install*    in client and api modules
+  -   *docker-compose up*
   
 Client port exposed: 8080
 
