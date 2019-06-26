@@ -33,16 +33,15 @@ INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, wa
 INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (4, 190, 'AVAILABLE', 1, 2);
 INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (5, 20, 'AVAILABLE', 3, 3);
 INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (6, 65, 'AVAILABLE', 1, 3);
-INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (7, 20, 'RESERVED', 2, 1);
-INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (8, 10, 'AVAILABLE', 2, 2);
-INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (9, 0, 'RESERVED', 1, 1);
-INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (10, 0, 'RESERVED', 1, 2);
-INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (11, 0, 'RESERVED', 2, 2);
-INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (12, 10, 'AVAILABLE', 2, 3);
-INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (13, 0, 'RESERVED', 1, 3);
-INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (14, 0, 'RESERVED', 3, 3);
-INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (15, 50, 'AVAILABLE', 3, 4);
-INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (16, 100, 'AVAILABLE', 4, 4);
+INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (7, 10, 'AVAILABLE', 2, 2);
+INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (8, 0, 'RESERVED', 1, 1);
+INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (9, 0, 'RESERVED', 1, 2);
+INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (10, 0, 'RESERVED', 2, 2);
+INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (11, 10, 'AVAILABLE', 2, 3);
+INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (12, 0, 'RESERVED', 1, 3);
+INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (13, 0, 'RESERVED', 3, 3);
+INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (14, 50, 'AVAILABLE', 3, 4);
+INSERT INTO `warehouse-management`.stocks (id, itemStock, stockType, item_id, warehouse_id) VALUES (15, 100, 'AVAILABLE', 4, 4);
 
 INSERT INTO `warehouse-management`.transfers (id, acceptedDate, challengedDate, createdDate, isAccepted, isChallenged, updatedDate, destinationWarehouse_id, sourceWarehouse_id) VALUES (2, '2019-06-07', null, '2019-06-07', true, false, null, 3, 1);
 INSERT INTO `warehouse-management`.transfers (id, acceptedDate, challengedDate, createdDate, isAccepted, isChallenged, updatedDate, destinationWarehouse_id, sourceWarehouse_id) VALUES (4, '2019-06-07', null, '2019-06-07', true, false, null, 3, 2);
