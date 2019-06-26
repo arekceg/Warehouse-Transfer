@@ -15,4 +15,5 @@ Developed as a final project for Java Bootcamp.
   - docker-compose up
   
 Client port exposed: 8080
+
 Stock logins are: admin@admin; aa@aa; bb@bb; cc@cc
