@@ -12,6 +12,6 @@ Developed as a final project for Java Bootcamp.
 
 # To run:
   - mvn clean install in client and api modules
-  - docker-compose-up
-  - Client port exposed: 8080
-  - Stock logins are: admin@admin; aa@aa; bb@bb; cc@cc
+  - docker-compose up
+Client port exposed: 8080
+Stock logins are: admin@admin; aa@aa; bb@bb; cc@cc
