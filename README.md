@@ -4,8 +4,14 @@ App for managing item transfer logistics between warehouses. App consits of two 
   - REST API 
   - Client application with simple frontend functionality
  
-Both apps are designed to be run in separate Docker containters. Main database is hosted on Google Cloud Services. App version on github uses local databases.
+Both apps are designed to be run in separate Docker containters. Main database is hosted on Google Cloud Services. Github app version uses local databases for easier Docker deployment.
 
 Developed as a final project for Java Bootcamp. 
 
 **Uses: Spring Boot, Hibernate, JPA, Spring Security, Docker, Google Cloud**
+
+# To run:
+  - mvn clean install in cliend and api modules
+  - docker-compose-up
+  - Client port exposed: 8080
+  - Stock logins are: admin@admin; aa@aa; bb@bb; cc@cc
