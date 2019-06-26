@@ -16,4 +16,4 @@ Developed as a final project for Java Bootcamp.
   
 Client port exposed: 8080
 
-Stock logins are: admin@admin; aa@aa; bb@bb; cc@cc
+Stock logins are: admin@admin; aa@aa; bb@bb; ff@ff
