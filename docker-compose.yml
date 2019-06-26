@@ -3,17 +3,13 @@ version: '3.1'
 services:
 
   db:
-    build: ./db-dump
+    image: mysql:latest
     ports:
       - 13306:3306
     environment:
       MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: warehouse-management
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root_password
-    networks:
-     - wt-network
 
   wt-api:
     depends_on:
@@ -21,10 +17,8 @@ services:
     build: ./warehouse-transfer-api
     ports:
      - 8081:8081
-    links:
-     - db:db
-    networks:
-     - wt-network
+    environment:
+      WAIT_HOSTS: db:3306
 
   wt-client:
     depends_on:
@@ -32,11 +26,5 @@ services:
     build: ./warehouse-transfer-client
     ports:
      - 8080:8080
-    links:
-     - db:db
-    networks:
-     - wt-network
-
-networks:
- wt-network:
-  driver: bridge
+    environment:
+      WAIT_HOSTS: db:3306
